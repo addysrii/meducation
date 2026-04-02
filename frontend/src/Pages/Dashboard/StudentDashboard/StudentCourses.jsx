@@ -2,6 +2,7 @@ import React,{ useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Popup from './Popup';
 import axios from 'axios';
+import { use } from 'react';
 
 function StudentCourses() {
   const { ID } = useParams();
@@ -37,11 +38,35 @@ function StudentCourses() {
 
   const openpopup = async(sub)=>{ 
     setsubDetails(sub);
+    console.log(sub);
     await axios.get(`/api/course/${sub.coursename}`)
       .then(res => {setPopup(true);
       setsubD(res.data.data)})
   }
-
+useEffect(() => {
+  const getAllCourses = async () => {
+    try {
+      const response = await fetch(`/api/course/all`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  console.log("now", response)
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+  
+      // const user = await response.json();
+      // setdata(user.data);
+      // console.log(user.data);
+  
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+  getAllCourses();
+}, [])
   const price = {
     math: 700,
     physics: 800,

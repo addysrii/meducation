@@ -97,6 +97,7 @@ const TeacherDocument = () => {
       }
     } catch (e) {
       console.error("Error:", e);
+      
     }
   };
 

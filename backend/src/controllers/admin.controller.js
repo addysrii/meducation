@@ -33,7 +33,7 @@ const adminSignUp = asyncHandler(async(req,res)=>{
 
     return res 
     .status(200)
-    .json(new ApiResponse(400,{}, "admin added successfully"))
+    .json(new ApiResponse(201,{}, "admin added successfully"))
 
 })
 

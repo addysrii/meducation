@@ -29,7 +29,7 @@ const verifyEmail = async (Email, Firstname, createdStudent_id) => {
         // };
 
         const mailOptions = {
-            from: "elearningsnu@gmail.com",
+            from: "adityasrivastava9406@gmail.com",
             to: Email,
             subject: "Verify your E-mail",
             html: `

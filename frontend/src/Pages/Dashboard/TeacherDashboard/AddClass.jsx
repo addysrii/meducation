@@ -40,6 +40,7 @@ function AddClass({ onClose }) {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            credentials: "include",
           },
         });
 

@@ -33,6 +33,7 @@ export default function StudentClasses() {
         const response = await fetch(`${api}/api/course/classes/student/${ID}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
         });
         if (!response.ok) throw new Error("Failed to fetch data");
         const user = await response.json();

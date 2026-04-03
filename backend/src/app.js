@@ -15,7 +15,7 @@ app.options("*", cors()); // VERY IMPORTANT
 
 app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit: "16kb"}))
-app.use(express.static("public"))
+
 app.use(cookieParser())
 
 
@@ -43,5 +43,5 @@ app.use("/api/admin", adminRouter)
 import paymentRouter from "./routes/payment.routes.js"
 app.use("/api/payment", paymentRouter)
 
-
+app.use(express.static("public"))
 export {app}

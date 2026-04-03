@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Popup from "./Popup";
 import { motion, AnimatePresence } from "framer-motion";
-
+import api from "../../../api/api";
 const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 const COURSE_STYLES = {
@@ -39,7 +39,7 @@ export default function StudentCourses() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`/api/course/student/${ID}/enrolled`, {
+        const response = await fetch(`${api}/api/course/student/${ID}/enrolled`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -59,7 +59,7 @@ export default function StudentCourses() {
   const openpopup = async (sub) => {
     setSubDetails(sub);
     try {
-      const res = await axios.get(`/api/course/${sub.coursename}`);
+      const res = await axios.get(`${api}/api/course/${sub.coursename}`);
       setSubD(res.data.data);
       setPopup(true);
     } catch {

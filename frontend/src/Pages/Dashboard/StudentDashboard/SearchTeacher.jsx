@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Search from '../../Components/Searchbtn/Search'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import api from '../../../api/api';
 function SearchTeacher() {
   const [popup, SetPopup] = useState(false);
   

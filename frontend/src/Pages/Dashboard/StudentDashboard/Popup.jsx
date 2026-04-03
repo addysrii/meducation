@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import api from "../../../api/api";
 const PRICE = { math: 700, physics: 800, computer: 1000, chemistry: 600, biology: 500 };
 
 const SUBJECT_COLORS = {
@@ -36,7 +36,7 @@ export default function Popup({ onClose, subject, allSubject }) {
     const getData = async () => {
       setLoadingTeacher(true);
       try {
-        const res = await fetch("/api/teacher/teacherdocuments", {
+        const res = await fetch(`${api}/api/teacher/teacherdocuments`, {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

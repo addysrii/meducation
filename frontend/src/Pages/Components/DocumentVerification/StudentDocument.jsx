@@ -4,7 +4,7 @@ import InputUpload from "../DocumentVerification/Inputupload/InputUpload.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import { RotatingLines } from "react-loader-spinner";
 import logo from "../../Images/logo.svg";
-
+import api from "../../../api/api.js";
 const StudentDocument = () => {
   const [data, setdata] = useState([]);
   const [error, setError] = useState("");
@@ -15,7 +15,7 @@ const StudentDocument = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`/api/student/StudentDocument/${Data}`, {
+        const response = await fetch(`${api}/api/student/StudentDocument/${Data}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

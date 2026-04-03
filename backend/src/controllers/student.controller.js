@@ -182,11 +182,11 @@ const login = asyncHandler(async(req,res) => {
 
     const loggedInStd = await student.findById(tempStd).select("-Password -Refreshtoken")
 
-    const options = {
-        httpOnly:true,
-        secure:true,
-    }
-
+   const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",   // 🔥 THIS IS THE FIX
+}
     return res
     .status(200)
     .cookie("Accesstoken", Accesstoken, options)
@@ -213,10 +213,11 @@ const logout = asyncHandler(async(req,res)=>{
             new:true
         }
     )
-    const options ={
-        httpOnly:true,
-        secure:true,
-    }
+   const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",   // 🔥 THIS IS THE FIX
+}
 
     return res
     .status(200)

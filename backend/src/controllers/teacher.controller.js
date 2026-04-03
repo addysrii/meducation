@@ -152,9 +152,10 @@ const login = asyncHandler(async (req, res) => {
     const loggedInTeacher = await Teacher.findById(teacher._id).select("-Password -Refreshtoken");
 
     const options = {
-        httpOnly: true,
-        secure: true,
-    };
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",   // 🔥 THIS IS THE FIX
+}
 
     return res
         .status(200)
@@ -175,10 +176,11 @@ const logout = asyncHandler(async(req, res)=>{
         }
     )
 
-    const options ={
-        httpOnly:true,
-        secure:true,
-    }
+    const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",   // 🔥 THIS IS THE FIX
+}
 
     return res
     .status(200)

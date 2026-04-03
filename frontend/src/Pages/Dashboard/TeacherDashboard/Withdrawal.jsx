@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import api from '../../../api/api';
 function Withdrawal({ onClose, TA }) {
   const { ID } = useParams();
   const [amount, setAmount] = useState('');
@@ -18,7 +18,7 @@ function Withdrawal({ onClose, TA }) {
       alert('Enter a valid Remuneration Amount 📈');
     } else {
       try {
-        const response = await fetch(`/api/payment/teacher/${ID}/withdraw`, {
+        const response = await fetch(`${api}/api/payment/teacher/${ID}/withdraw`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

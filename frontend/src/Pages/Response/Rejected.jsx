@@ -1,7 +1,7 @@
 import React from "react";
 import rejected from "../Images/rejected.svg";
 import { NavLink, useParams } from "react-router-dom";
-
+  
 function Rejected() {
   const { ID, user } = useParams();
   let type = '';

@@ -3,6 +3,7 @@ import "./Login.css";
 import Admin from './Images/Admin.svg'
 import {  useNavigate } from "react-router-dom";
 import Header from '../Home/Header/Header';
+import api from "../../api/api";
 
 export default function AdminLogin() {
   // State to hold user input and errors
@@ -42,7 +43,7 @@ export default function AdminLogin() {
 
     try {
       // Send data to backend
-      const response = await fetch(`/api/admin/login`, {
+      const response = await fetch(`${api}/api/admin/login`, {
         method: 'POST',
         credentials: "include",
         headers: {

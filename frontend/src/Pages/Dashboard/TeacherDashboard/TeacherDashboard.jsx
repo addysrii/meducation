@@ -3,7 +3,7 @@ import { NavLink, useParams, useNavigate, Outlet } from 'react-router-dom';
 import teachingImg from '../../Images/Teaching.svg';
 import logo from '../../Images/logo.svg';
 import { motion } from 'framer-motion';
-
+import api from '../../../api/api';
 function Skeleton({ className = "" }) {
   return <div className={`animate-pulse rounded-xl bg-slate-200 border-4 border-slate-900 ${className}`} />;
 }
@@ -17,7 +17,7 @@ export default function TeacherDashboard() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`/api/Teacher/TeacherDocument/${ID}`, {
+        const response = await fetch(`${api}/api/Teacher/TeacherDocument/${ID}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -35,7 +35,7 @@ export default function TeacherDashboard() {
 
   const Handlelogout = async () => {
     try {
-      const response = await fetch("/api/teacher/logout", {
+      const response = await fetch(`${api}/api/teacher/logout`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

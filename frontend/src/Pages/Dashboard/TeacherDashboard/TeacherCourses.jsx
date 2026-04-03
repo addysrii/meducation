@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Popup from './Popup';
 import { motion } from 'framer-motion';
-
+import api from '../../../api/api';
 const COURSE_SUBJECTS = [
   { name: "Physics", icon: "🌌", bg: "bg-sky-300" },
   { name: "Chemistry", icon: "⚗️", bg: "bg-emerald-300" },

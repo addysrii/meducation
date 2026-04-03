@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Withdrawal from "./Withdrawal";
 import { motion, AnimatePresence } from "framer-motion";
-
+import api from "../../../api/api";
 function Skeleton({ className = "" }) {
   return <div className={`animate-pulse rounded-xl bg-slate-200 border-4 border-slate-900 ${className}`} />;
 }
@@ -32,7 +32,7 @@ function DashboardTeacher() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`/api/Teacher/TeacherDocument/${ID}`, {
+        const response = await fetch(`${api}/api/Teacher/TeacherDocument/${ID}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ function DashboardTeacher() {
     const getData = async()=>{
       if(!data?.Teacherdetails) return;
       try {
-        const Data = await fetch('/api/teacher/teacherdocuments',{
+        const Data = await fetch(`${api}/api/teacher/teacherdocuments`,{
           method: 'POST',
           credentials: "include",
           headers: {
@@ -79,7 +79,7 @@ function DashboardTeacher() {
   useEffect(() => {
     const getAmount = async () => {
       try {
-        const response = await fetch(`/api/payment/teacher/${ID}/balance`, {
+        const response = await fetch(`${api}/api/payment/teacher/${ID}/balance`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +103,7 @@ function DashboardTeacher() {
     const getCourses = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/course/Teacher/${ID}/enrolled`, {
+        const response = await fetch(`${api}/api/course/Teacher/${ID}/enrolled`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

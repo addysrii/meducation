@@ -4,7 +4,7 @@ import Clock from '../Images/Clock.png';
 import AddClass from './AddClass';
 import { NavLink, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
+import api from '../../../api/api';
 function Skeleton({ className = "" }) {
   return <div className={`animate-pulse border-4 border-slate-200 bg-slate-100 ${className}`} />;
 }
@@ -32,7 +32,7 @@ function TeacherClasses() {
     useEffect(() => {
         const getData = async () => {
             try {
-                const response = await fetch(`/api/course/classes/teacher/${ID}`, {
+                const response = await fetch(`${api}/api/course/classes/teacher/${ID}`, {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                 });

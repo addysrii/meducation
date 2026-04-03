@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import Header from '../Header/Header'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import api from '../../../api/api';
 function Search() {
     const { subject } = useParams();
     const [data, setData] = useState(subject || '');
@@ -32,7 +32,7 @@ function Search() {
              return;
         }
         try {
-            let Data = await fetch(`/api/course/${Subject}`)
+            let Data = await fetch(`${api}/api/course/${Subject}`)
             let response = await Data.json();
             if(response.statusCode == 200){
                  setCourse(response.data)
@@ -55,7 +55,7 @@ function Search() {
     const openTeacherDec = async(id,fname,lname,sub)=>{
         setTname({fname,lname,sub});
 
-        const resData = await fetch('/api/teacher/teacherdocuments',{
+        const resData = await fetch(`${api}/api/teacher/teacherdocuments`,{
             method: 'POST',
             credentials: "include",
             headers: {

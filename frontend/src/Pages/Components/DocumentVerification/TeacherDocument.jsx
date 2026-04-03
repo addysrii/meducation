@@ -81,7 +81,7 @@ const TeacherDocument = () => {
     });
 
     try {
-      const response = await fetch(`/api/teacher/verification/${Data}`, {
+      const response = await fetch(`${api}/api/teacher/verification/${Data}`, {
         method: "POST",
         body: formDataObj,
       });

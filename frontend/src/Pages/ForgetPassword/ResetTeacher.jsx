@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import api from '../../api/api';
 const ResetTeacher = () => {
   const [data, setData] = useState({
     password: '',
@@ -44,7 +44,7 @@ const ResetTeacher = () => {
     }
     
     try {
-      const response = axios.post(`/api/teacher/forgetpassword/${token}`, {
+      const response = axios.post(`${api}/api/teacher/forgetpassword/${token}`, {
         password: data.password,
         confirmPassword: data.confirmPassword
       });

@@ -11,7 +11,7 @@ import { IoSchoolSharp } from "react-icons/io5";
 import { FaSchool } from "react-icons/fa";
 import { NavLink , useNavigate} from "react-router-dom";
 import { motion } from "framer-motion";
-
+import api from '../../../api/api';
 function Landing() {
   const [LClass, setLClass] = useState(false);
   const [EMentor, setEMentor] = useState(false);
@@ -23,7 +23,7 @@ function Landing() {
   const navigate = useNavigate()
 
   const handleSearch = ()=>{
-    navigate(`/Search/${subject}`)
+    navigate(`${api}/Search/${subject}`)
   }
 
   const AA = ()=>{
@@ -39,7 +39,7 @@ function Landing() {
   const teachersList = async(sub)=>{
     setLoading(true);
 
-    const response = await fetch(`/api/course/${sub}`, {
+    const response = await fetch(`${api}/api/course/${sub}`, {
       method: 'GET',
       credentials: "include",
       headers: {

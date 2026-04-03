@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import api from "../../api/api";
 const Signup = () => {
   const [Firstname, setFirstName] = useState("");
   const [Lastname, setLastName] = useState("");
@@ -37,7 +37,7 @@ const Signup = () => {
     setErrors({});
 
     try {
-      const response = await fetch(`/api/${userType}/signup`, {
+      const response = await fetch(`${api}/api/${userType}/signup`, {
         method: "POST",
         mode: "cors",
         credentials: "include",

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
-
+import api from '../../api/api';
 const Forgetpassword = () => {
   const [userType, setUserType] = useState('student');
   const [data, setData] = useState({ email: '' });
@@ -31,7 +31,7 @@ const Forgetpassword = () => {
     }
 
     try {
-      const response = await axios.post(`/api/${userType}/forgetpassword`, { Email: data.email});
+      const response = await axios.post(`${api}/api/${userType}/forgetpassword`, { Email: data.email});
       console.log(response.data);
       toast.success('Recovery email dispatched! 📨', { style: { border: '4px solid #0f172a', borderRadius: '1rem', background: '#a3e635', color: '#0f172a', fontWeight: '900' }});
     } catch (error) {

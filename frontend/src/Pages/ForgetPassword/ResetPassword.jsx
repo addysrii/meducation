@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import api from '../../api/api';
 
 const toastStyle = { border: '4px solid #0f172a', borderRadius: '1rem', fontWeight: '900' };
 
@@ -36,7 +37,7 @@ const ResetPassword = () => {
       return;
     }
 
-    const response = axios.post(`/api/student/forgetpassword/${token}`, { password, confirmPassword });
+    const response = axios.post(`${api}/api/student/forgetpassword/${token}`, { password, confirmPassword });
     toast.promise(response, {
       loading: 'Processing your request...',
       success: (res) => res?.data?.message || 'Password updated! 🎉',

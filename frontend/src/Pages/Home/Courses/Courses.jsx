@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Header from '../Header/Header'
 import Footer from '../../Footer/Footer'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import api from '../../../api/api';
 function Courses() {
   const [facList, setFacList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ function Courses() {
     setLoading(true);
     setSelectedTopic(sub);
 
-    const response = await fetch(`/api/course/${sub}`, {
+    const response = await fetch(`${api}/api/course/${sub}`, {
       method: 'GET',
       credentials: "include",
       headers: {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import api from '../../../api/api';
 function Popup({ onClose, subject }) {
   const [desc, setDesc] = useState('');
   const { ID } = useParams();
@@ -80,7 +80,7 @@ function Popup({ onClose, subject }) {
     };
 
     try {
-       const response = await fetch(`/api/course/${subject}/create/${ID}`, {
+       const response = await fetch(`${api}/api/course/${subject}/create/${ID}`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(data),

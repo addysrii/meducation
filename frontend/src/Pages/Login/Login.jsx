@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import api from "../../api/api";
 export default function Login() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -32,7 +32,7 @@ export default function Login() {
     setErrors({});
 
     try {
-      const response = await fetch(`/api/${userType}/login`, {
+      const response = await fetch(`${api}/api/${userType}/login`, {
         method: 'POST',
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +83,7 @@ export default function Login() {
         <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-56 h-56 bg-purple-400/20 rounded-full blur-3xl pointer-events-none" />
 
-        <motion.div 
+        <motion.div
           initial={{ x: -30, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -98,7 +98,7 @@ export default function Login() {
 
           <div className="flex flex-col gap-4">
             <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
-              Welcome<br/>Back! 👋
+              Welcome<br />Back! 👋
             </h1>
             <p className="text-slate-400 font-bold text-lg max-w-xs">
               Your knowledge journey continues right where you left off.
@@ -141,11 +141,10 @@ export default function Login() {
                   key={type}
                   type="button"
                   onClick={() => setUserType(type)}
-                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-colors ${
-                    userType === type
+                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-colors ${userType === type
                       ? 'bg-white border-2 border-slate-900 text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]'
                       : 'text-slate-500 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   {type === 'student' ? '🎒 Student' : '🏫 Teacher'}
                 </button>

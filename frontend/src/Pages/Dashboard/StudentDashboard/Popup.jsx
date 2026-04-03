@@ -4,11 +4,11 @@ import api from "../../../api/api";
 const PRICE = { math: 700, physics: 800, computer: 1000, chemistry: 600, biology: 500 };
 
 const SUBJECT_COLORS = {
-  math:      { bg: "bg-violet-300", badge: "bg-violet-400 text-slate-900 border-slate-900" },
-  physics:   { bg: "bg-sky-300",    badge: "bg-sky-400 text-slate-900 border-slate-900"    },
-  chemistry: { bg: "bg-emerald-300",badge: "bg-emerald-400 text-slate-900 border-slate-900" },
-  biology:   { bg: "bg-rose-300",   badge: "bg-rose-400 text-slate-900 border-slate-900"    },
-  computer:  { bg: "bg-amber-300",  badge: "bg-amber-400 text-slate-900 border-slate-900"  },
+  math: { bg: "bg-violet-300", badge: "bg-violet-400 text-slate-900 border-slate-900" },
+  physics: { bg: "bg-sky-300", badge: "bg-sky-400 text-slate-900 border-slate-900" },
+  chemistry: { bg: "bg-emerald-300", badge: "bg-emerald-400 text-slate-900 border-slate-900" },
+  biology: { bg: "bg-rose-300", badge: "bg-rose-400 text-slate-900 border-slate-900" },
+  computer: { bg: "bg-amber-300", badge: "bg-amber-400 text-slate-900 border-slate-900" },
 };
 
 function Skeleton({ className = "" }) {
@@ -40,6 +40,7 @@ export default function Popup({ onClose, subject, allSubject }) {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ teacherID: details.Teacherdetails }),
         });
         const json = await res.json();
@@ -117,7 +118,7 @@ export default function Popup({ onClose, subject, allSubject }) {
                   <div>
                     <p className="text-lg font-black text-slate-900">
                       {details?.Firstname ?? teacherInfo?.Firstname ?? "—"}{" "}
-                      {details?.Lastname  ?? teacherInfo?.Lastname  ?? ""}
+                      {details?.Lastname ?? teacherInfo?.Lastname ?? ""}
                     </p>
                     <p className="text-sm font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded inline-block mt-1 border-2 border-slate-900">
                       {details?.Email ?? teacherInfo?.Email ?? "—"}
@@ -153,8 +154,8 @@ export default function Popup({ onClose, subject, allSubject }) {
                 <p className="text-xs text-slate-500 font-black uppercase tracking-widest mb-4">Schedule</p>
                 <div className="flex flex-col gap-3">
                   {subject.schedule.map((slot, i) => {
-                    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-                    const fmt = (m) => `${Math.floor(m/60)}:${m%60===0?"00":String(m%60).padStart(2,"0")}`;
+                    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                    const fmt = (m) => `${Math.floor(m / 60)}:${m % 60 === 0 ? "00" : String(m % 60).padStart(2, "0")}`;
                     return (
                       <div key={i} className="flex justify-between items-center bg-slate-100 p-3 rounded-xl border-2 border-slate-900">
                         <span className="text-slate-900 font-black uppercase tracking-wider">{days[slot.day]}</span>

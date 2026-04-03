@@ -21,6 +21,7 @@ export default function StudentDashboard() {
         const response = await fetch(`${api}/api/Student/StudentDocument/${ID}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
         });
         if (!response.ok) throw new Error("Failed to fetch data");
         const user = await response.json();
@@ -39,7 +40,7 @@ export default function StudentDashboard() {
       const response = await fetch(`${api}/api/student/logout`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+
       });
       const res = await response.json();
       if (res.statusCode === 200) {
@@ -58,9 +59,9 @@ export default function StudentDashboard() {
     : "??";
 
   const navLinks = [
-    { label: "Search",   icon: "🔍", to: `/Student/Dashboard/${ID}/Search`, color: "bg-purple-300"  },
-    { label: "Classes",  icon: "📅", to: `/Student/Dashboard/${ID}/Classes`, color: "bg-sky-300" },
-    { label: "Courses",  icon: "📚", to: `/Student/Dashboard/${ID}/Courses`, color: "bg-lime-300" },
+    { label: "Search", icon: "🔍", to: `/Student/Dashboard/${ID}/Search`, color: "bg-purple-300" },
+    { label: "Classes", icon: "📅", to: `/Student/Dashboard/${ID}/Classes`, color: "bg-sky-300" },
+    { label: "Courses", icon: "📚", to: `/Student/Dashboard/${ID}/Courses`, color: "bg-lime-300" },
   ];
 
   return (
@@ -68,7 +69,7 @@ export default function StudentDashboard() {
 
       {/* ── Sidebar ──────────────────────────────────────────────────────── */}
       <aside className="fixed left-0 top-0 h-full w-[16rem] bg-white border-r-4 border-slate-900 flex flex-col z-30 shadow-[4px_0px_0px_0px_#0f172a]">
-        
+
         {/* Logo */}
         <NavLink to="/">
           <div className="p-6 flex items-center gap-4 border-b-4 border-slate-900 hover:bg-yellow-100 transition-colors cursor-pointer group">
@@ -83,18 +84,18 @@ export default function StudentDashboard() {
 
         {/* Profile */}
         <div className="p-6 flex flex-col items-center text-center border-b-4 border-slate-900 relative bg-purple-50">
-           <div className="absolute top-4 right-4 bg-white px-2 py-1 rounded border-2 border-slate-900 font-black text-xs uppercase shadow-[2px_2px_0px_0px_#0f172a] text-purple-600">
-             Lvl 6
-           </div>
-           <div className="w-20 h-20 mt-4 rounded-[1.5rem] bg-purple-300 border-4 border-slate-900 shadow-[6px_6px_0px_0px_#0f172a] flex items-center justify-center font-black text-4xl mb-4 transform -rotate-3 hover:rotate-3 transition-transform">
-              {loading ? "..." : initials}
-           </div>
-           {loading ? (
-             <Skeleton className="w-24 h-4 mb-2" />
-           ) : (
-             <h2 className="font-black text-xl leading-tight uppercase tracking-tight">{fullName || "Student User"}</h2>
-           )}
-           {data?.Email && <p className="text-sm font-bold text-slate-500 truncate w-full mt-1 border-2 border-slate-900 bg-white shadow-[2px_2px_0px_0px_#0f172a] rounded px-2 py-1">{data.Email}</p>}
+          <div className="absolute top-4 right-4 bg-white px-2 py-1 rounded border-2 border-slate-900 font-black text-xs uppercase shadow-[2px_2px_0px_0px_#0f172a] text-purple-600">
+            Lvl 6
+          </div>
+          <div className="w-20 h-20 mt-4 rounded-[1.5rem] bg-purple-300 border-4 border-slate-900 shadow-[6px_6px_0px_0px_#0f172a] flex items-center justify-center font-black text-4xl mb-4 transform -rotate-3 hover:rotate-3 transition-transform">
+            {loading ? "..." : initials}
+          </div>
+          {loading ? (
+            <Skeleton className="w-24 h-4 mb-2" />
+          ) : (
+            <h2 className="font-black text-xl leading-tight uppercase tracking-tight">{fullName || "Student User"}</h2>
+          )}
+          {data?.Email && <p className="text-sm font-bold text-slate-500 truncate w-full mt-1 border-2 border-slate-900 bg-white shadow-[2px_2px_0px_0px_#0f172a] rounded px-2 py-1">{data.Email}</p>}
         </div>
 
         {/* Nav */}
@@ -104,9 +105,8 @@ export default function StudentDashboard() {
               key={item.label}
               to={item.to}
               className={({ isActive }) =>
-                `flex items-center gap-4 px-4 py-3 rounded-2xl border-4 text-base font-black uppercase tracking-widest transition-all ${
-                  isActive 
-                  ? `${item.color} border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] translate-x-1` 
+                `flex items-center gap-4 px-4 py-3 rounded-2xl border-4 text-base font-black uppercase tracking-widest transition-all ${isActive
+                  ? `${item.color} border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] translate-x-1`
                   : `bg-white border-transparent text-slate-500 hover:border-slate-900 hover:text-slate-900 hover:shadow-[4px_4px_0px_0px_#0f172a] hover:bg-slate-50`
                 }`
               }
@@ -136,69 +136,69 @@ export default function StudentDashboard() {
         {/* Hero Section */}
         <div className="bg-sky-200 border-b-4 border-slate-900 relative shadow-sm">
           <div className="p-10 lg:p-16 flex items-center justify-between z-10 relative">
-             <div className="max-w-2xl">
-                <span className="bg-yellow-400 border-4 border-slate-900 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-widest shadow-[4px_4px_0px_0px_#0f172a] inline-block mb-6 transform -rotate-2">
-                   Welcome Back 🌟
-                </span>
-                {loading ? (
-                   <Skeleton className="w-80 h-16 mb-4" />
-                ) : (
-                   <h1 className="text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-6" style={{ textShadow: '4px 4px 0px #0f172a, -1px -1px 0 #0f172a, 1px -1px 0 #0f172a, -1px 1px 0 #0f172a, 1px 1px 0 #0f172a', color: 'white' }}>
-                      {fullName || "Student"}
-                   </h1>
-                )}
-                <p className="text-lg lg:text-xl font-black tracking-wide border-4 border-slate-900 bg-white px-5 py-3 rounded-[1.5rem] inline-block shadow-[6px_6px_0px_0px_#0f172a]">
-                   Ready to crush today's sessions? 🚀
-                </p>
+            <div className="max-w-2xl">
+              <span className="bg-yellow-400 border-4 border-slate-900 px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-widest shadow-[4px_4px_0px_0px_#0f172a] inline-block mb-6 transform -rotate-2">
+                Welcome Back 🌟
+              </span>
+              {loading ? (
+                <Skeleton className="w-80 h-16 mb-4" />
+              ) : (
+                <h1 className="text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-6" style={{ textShadow: '4px 4px 0px #0f172a, -1px -1px 0 #0f172a, 1px -1px 0 #0f172a, -1px 1px 0 #0f172a, 1px 1px 0 #0f172a', color: 'white' }}>
+                  {fullName || "Student"}
+                </h1>
+              )}
+              <p className="text-lg lg:text-xl font-black tracking-wide border-4 border-slate-900 bg-white px-5 py-3 rounded-[1.5rem] inline-block shadow-[6px_6px_0px_0px_#0f172a]">
+                Ready to crush today's sessions? 🚀
+              </p>
 
-                {error && (
-                   <div className="mt-6 bg-red-400 border-4 border-slate-900 font-black px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#0f172a] uppercase text-sm inline-block text-white">
-                     ⚠ {error}
-                   </div>
-                )}
-             </div>
+              {error && (
+                <div className="mt-6 bg-red-400 border-4 border-slate-900 font-black px-4 py-3 rounded-xl shadow-[4px_4px_0px_0px_#0f172a] uppercase text-sm inline-block text-white">
+                  ⚠ {error}
+                </div>
+              )}
+            </div>
 
-             <div className="hidden lg:block relative group">
-                <div className="absolute inset-0 bg-yellow-400 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                <img
-                  src={teachingImg}
-                  alt="Student"
-                  width={300}
-                  className="relative z-10 transform group-hover:scale-105 transition-transform duration-500 hover:-rotate-2"
-                  style={{ filter: "drop-shadow(6px 6px 0px rgba(15,23,42,1))" }}
-                />
-             </div>
+            <div className="hidden lg:block relative group">
+              <div className="absolute inset-0 bg-yellow-400 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+              <img
+                src={teachingImg}
+                alt="Student"
+                width={300}
+                className="relative z-10 transform group-hover:scale-105 transition-transform duration-500 hover:-rotate-2"
+                style={{ filter: "drop-shadow(6px 6px 0px rgba(15,23,42,1))" }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Content Wrapper */}
         <div className="p-8 lg:p-12 flex-1 flex flex-col w-full">
-           
-           {/* Stat cards */}
-           <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 mb-12 w-full max-w-7xl mx-auto">
-             {[
-               { label: "ID Tag",    value: ID ? `#${ID.slice(-4)}` : "—",     bg: "bg-fuchsia-300", icon: "🏷️" },
-               { label: "Hours Study", value: "142h",  bg: "bg-lime-400",   icon: "⏱️" },
-               { label: "XP Points",   value: "1,380", bg: "bg-yellow-400", icon: "✨" },
-               { label: "Avg Score",   value: "91%",   bg: "bg-rose-400",   icon: "🎯" },
-             ].map((s) => (
-               <motion.div
-                 whileHover={{ y: -6, boxShadow: "8px 8px 0px 0px #0f172a" }}
-                 key={s.label}
-                 className={`rounded-[2.5rem] p-6 lg:p-8 border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] flex flex-col relative overflow-hidden ${s.bg}`}
-               >
-                 <span className="text-6xl mb-4 absolute -right-2 top-2 opacity-50 transform rotate-12">{s.icon}</span>
-                 <p className="font-black text-5xl text-slate-900 mb-4 relative z-10 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.5)]">{s.value}</p>
-                 <p className="font-black text-sm uppercase tracking-widest border-4 border-slate-900 bg-white/60 px-4 py-2 rounded-xl self-start relative z-10 shadow-[2px_2px_0px_0px_#0f172a]">{s.label}</p>
-               </motion.div>
-             ))}
-           </div>
 
-           {/* Dynamic Outlet Render Area */}
-           <div className="w-full flex-1">
-             <Outlet />
-           </div>
-           
+          {/* Stat cards */}
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-6 mb-12 w-full max-w-7xl mx-auto">
+            {[
+              { label: "ID Tag", value: ID ? `#${ID.slice(-4)}` : "—", bg: "bg-fuchsia-300", icon: "🏷️" },
+              { label: "Hours Study", value: "142h", bg: "bg-lime-400", icon: "⏱️" },
+              { label: "XP Points", value: "1,380", bg: "bg-yellow-400", icon: "✨" },
+              { label: "Avg Score", value: "91%", bg: "bg-rose-400", icon: "🎯" },
+            ].map((s) => (
+              <motion.div
+                whileHover={{ y: -6, boxShadow: "8px 8px 0px 0px #0f172a" }}
+                key={s.label}
+                className={`rounded-[2.5rem] p-6 lg:p-8 border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] flex flex-col relative overflow-hidden ${s.bg}`}
+              >
+                <span className="text-6xl mb-4 absolute -right-2 top-2 opacity-50 transform rotate-12">{s.icon}</span>
+                <p className="font-black text-5xl text-slate-900 mb-4 relative z-10 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.5)]">{s.value}</p>
+                <p className="font-black text-sm uppercase tracking-widest border-4 border-slate-900 bg-white/60 px-4 py-2 rounded-xl self-start relative z-10 shadow-[2px_2px_0px_0px_#0f172a]">{s.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Dynamic Outlet Render Area */}
+          <div className="w-full flex-1">
+            <Outlet />
+          </div>
+
         </div>
       </main>
 

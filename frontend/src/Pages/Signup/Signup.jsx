@@ -42,6 +42,7 @@ const Signup = () => {
         mode: "cors",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ Firstname, Lastname, Email, Password }),
       });
 
@@ -85,7 +86,7 @@ const Signup = () => {
 
           <div className="flex flex-col gap-4">
             <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
-              Join The<br/>Movement! ✊
+              Join The<br />Movement! ✊
             </h1>
             <p className="text-slate-400 font-bold text-lg max-w-xs">
               Build skills, connect with teachers, and unlock your future — all in one place.
@@ -127,11 +128,10 @@ const Signup = () => {
                   key={type}
                   type="button"
                   onClick={() => setUserType(type)}
-                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-colors ${
-                    userType === type
-                      ? 'bg-white border-2 border-slate-900 text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]'
-                      : 'text-slate-500 hover:text-slate-900'
-                  }`}
+                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-colors ${userType === type
+                    ? 'bg-white border-2 border-slate-900 text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]'
+                    : 'text-slate-500 hover:text-slate-900'
+                    }`}
                 >
                   {type === 'student' ? '🎒 Student' : '🏫 Teacher'}
                 </button>

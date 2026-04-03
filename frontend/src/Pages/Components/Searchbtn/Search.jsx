@@ -30,6 +30,7 @@ function Search() {
       method: 'POST',
       credentials: "include",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ teacherID: id }),
     });
     const res = await resData.json();
@@ -79,12 +80,14 @@ function Search() {
     const res = await check.json();
     if (res.statusCode === 200) {
       const dataReq = await fetch(`${api}/api/payment/course/${id}/${courseName}`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
         body: JSON.stringify({ fees: price[courseName] * 100 }),
       });
       const DATA = await dataReq.json();
       const Key = await fetch(`${api}/api/payment/razorkey`, {
-        method: "GET", headers: { "Content-Type": "application/json" },
+        method: "GET", headers: { "Content-Type": "application/json" ,
+          credentials: "include"
+        },
       });
       const responseKey = await Key.json();
       const options = {

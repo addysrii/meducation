@@ -18,7 +18,7 @@ export default function StudentDashboard() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(`${api}/api/Student/StudentDocument/${ID}`, {
+        const response = await fetch(`${api}/api/student/StudentDocument/${ID}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
           credentials: "include",

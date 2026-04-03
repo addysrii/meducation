@@ -1,14 +1,7 @@
-import React from 'react'
-import {Outlet} from 'react-router-dom'
-import StudentDashboard from './StudentDashboard'
+import StudentDashboard from "./StudentDashboard";
 
-function StudentLayout() {
-  return (
-    <>
-    <StudentDashboard/>
-    <Outlet/>
-    </>
-  )
+// StudentDashboard now contains <Outlet /> internally,
+// so StudentLayout just renders StudentDashboard.
+export default function StudentLayout() {
+  return <StudentDashboard />;
 }
-
-export default StudentLayout

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./Landing.css";
-import Classroom from "../../Images/Classroom.svg";
-import Plant from "../../Images/Plant.svg";
-import Plant2 from "../../Images/Plant2.svg"
+import Hero3D from "../../Images/Hero3D.png";
+import Creativity3D from "../../Images/Creativity3D.png";
+import Growth3D from "../../Images/Growth3D.png"
 import Contact from "../Contact/Contact.jsx";
 import Footer from "../../Footer/Footer.jsx";
 import Header from "../Header/Header.jsx";
@@ -10,6 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoSchoolSharp } from "react-icons/io5";
 import { FaSchool } from "react-icons/fa";
 import { NavLink , useNavigate} from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Landing() {
   const [LClass, setLClass] = useState(false);
@@ -22,7 +23,6 @@ function Landing() {
   const navigate = useNavigate()
 
   const handleSearch = ()=>{
-    // console.log('working')
     navigate(`/Search/${subject}`)
   }
 
@@ -49,225 +49,313 @@ function Landing() {
 
     const data = await response.json();
     setFacList(data.data);
-    console.log(data.data);
     setLoading(false);
   }
 
+  // Framer Motion Variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  };
+  
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const popIn = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { type: "spring", bounce: 0.5, duration: 0.8 } }
+  };
 
   return (
-    <>
-    <Header/>
-    {/* Top Section */}
-      <div className="top">
-        <div className="left">
-          <h1>
-          Empowering Minds, Inspiring Futures: <br />Your Gateway to Online Learning with <span className="font-semibold text-amber-400 font-serif text-5xl">Shiksharthee</span>
+    <div className="min-h-screen bg-[#F4F4F5] text-slate-900 font-sans overflow-x-hidden selection:bg-purple-500 selection:text-white pb-20">
+      <Header/>
+      
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-28 px-6 sm:px-12 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 z-10">
+        <motion.div 
+          initial="hidden" 
+          animate="visible" 
+          variants={fadeInUp} 
+          className="flex-[1.2] space-y-8 text-center lg:text-left z-10"
+        >
+          <motion.div 
+            whileHover={{ rotate: 2, scale: 1.05 }}
+            className="inline-block bg-sky-300 border-2 border-slate-900 rounded-full px-5 py-2 font-black uppercase tracking-widest text-sm shadow-[4px_4px_0px_0px_#0f172a] transform -rotate-2 origin-left cursor-default"
+          >
+            🚀 The New Era of Learning
+          </motion.div>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 leading-[1.05]">
+            Empower Minds. <br/>
+            <span className="text-purple-600 underline decoration-8 decoration-yellow-400">
+              Inspire Futures.
+            </span>
           </h1>
-          {/*  Search  */}
-
-          <div className="search mb-10">
-            <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/6c476f454537d7f27cae2b4d0f31e2b59b3020f5" width={30} alt="" />
-            <input type="text" placeholder='Ex: Math ...' value={subject} onChange={(e)=>setSubject(e.target.value)}/>
-            <button className='w-32' onClick={handleSearch}>Find Teacher</button>
-          </div>
-
-        </div>
-        <div className="right">
-          <img src={Classroom} width={500} alt="" />
-        </div>
-      </div>
-
-      {/* Features */}
-      <div className="features ">
-        <p>Why You Choose Us</p>
-        {/* <hr className="underLine"/> */}
-        <div className="fets2">
-          <div className="fet cursor-pointer mb-5" onClick={AA}>
-            <img
-              src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/622a85ea75414daadf6055613c074c5280b95444"
-              alt=""
-            />
-            <h4>Expert Mentor</h4>
-            <p>
-              Our expert mentors are the cornerstone of our educational
-              approach. With a wealth of knowledge they support our students on
-              their journey to success.
-            </p>
-          </div>
-
-          <div className="fet cursor-pointer mb-5" onClick={BB}>
-            <img
-              src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/1478ee1b2a35123ded761b65c3ed2ceaece0d20f"
-              alt=""
-            />
-            <h4>High Quality Live Class</h4>
-            <p>
-              We deliver high-quality live classes to our students, providing
-              interactive learning experiences led by experienced instructors.{" "}
-            </p>
-          </div>
-
-          <NavLink to='/contact'>
-            <div className="fet cursor-pointer">
-              <img
-                src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/c412120e39b2095486c76978d4cd0bea88fd883b"
-                alt=""
-              />
-              <h4>24/7 Live Support</h4>
-              <p>
-                We offer our students 24/7 live support. Whether it's a question
-                or a challenge at midnight, our dedicated team is here to provide
-                guidance, assistance.
-              </p>
-            </div>
-          </NavLink>
-        </div>
-        {LClass && (
-          <div className="flex items-center justify-center">
-            <div className="flex gap-5 items-center my-5">
-              <img src="https://lh3.googleusercontent.com/kq1PrZ8Kh1Pomlbfq4JM1Gx4z-oVr3HG9TEKzwZfqPLP3TdVYrx0QrIbpR-NmMwgDzhNTgi3FzuzseMpjzkfNrdHK5AzWGZl_RtKB80S-GZmWOQciR9s=w1296-v1-e30" alt="" width={300}/>
-              <div className="text-white flex flex-col items-center">
-                <h1>High Quality Live Class</h1>
-                <p>We deliver high-quality live classes to our students,<br /> providing interactive learning experiences <br />led by experienced instructors.</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {EMentor && (
-          <div className="flex items-center justify-center mt-7 gap-5">
-            <div className="bg-[#0E3A59] m-2 p-5 rounded-3xl overflow-hidden flex flex-col items-center justify-center">
-              <img className=" rounded-full" src="https://media.istockphoto.com/id/1310210662/photo/portrait-of-indian-woman-as-a-teacher-in-sari-standing-isolated-over-white-background-stock.jpg?s=612x612&w=0&k=20&c=EMI42nCFpak1c4JSFvwfN0Qllyxt19dlihYEXAdnCXY=" alt="" width={200}/>
-
-              <div className="flex items-center justify-start">
-                <CgProfile/>
-                <p>Prof. Dina Sharma</p>
-              </div>
-              <div className="flex items-center">
-                <FaSchool />
-                <p>Galaxy University</p>
-              </div>
-              <div className="flex items-center">
-                <IoSchoolSharp />
-                <p>Ph.D. in Astrophysics</p>
-              </div>
-            </div>
-            <div className="bg-[#0E3A59] m-2 p-5 rounded-3xl overflow-hidden flex flex-col items-center justify-center">
-              <img className=" rounded-full" src="https://media.istockphoto.com/id/1324558913/photo/confident-young-man-in-casual-green-shirt-looking-away-standing-with-crossed-arms-isolated-on.jpg?s=612x612&w=0&k=20&c=NOrKRrUuxvePKijL9sFBHlDwHESv7Van68-hoS-_4hQ=" alt="" width={200}/>
-
-              <div className="flex items-center justify-start">
-                <CgProfile/>
-                <p>Dr. Anand Mishra</p>
-              </div>
-              <div className="flex items-center">
-                <FaSchool />
-                <p>Maharishi University</p>
-              </div>
-              <div className="flex items-center">
-                <IoSchoolSharp />
-                <p>Ph.D. in Quantum Physics</p>
-              </div>
-            </div>
-            <div className="bg-[#0E3A59] m-2 p-5 rounded-3xl overflow-hidden flex flex-col items-center justify-center">
-              <img className=" rounded-full" src="https://media.istockphoto.com/id/1663458254/photo/portrait-of-beautiful-indian-woman-in-sari.jpg?s=612x612&w=0&k=20&c=raeTJOEyA4sFX_GwrgboXt9ZxtAZ8RkFuljPJnL9sCU=" alt="" width={200}/>
-
-              <div className="flex items-center justify-start">
-                <CgProfile/>
-                <p>Prof. Sunita Patel</p>
-              </div>
-              <div className="flex items-center">
-                <FaSchool />
-                <p>Ramanujan Institute</p>
-              </div>
-              <div className="flex items-center">
-                <IoSchoolSharp />
-                <p>D.Phil. in Number Theory</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Courses */}
-      <div className="courses">
-      <p>Faculty List</p>
-      <hr className="underLine"/>
-      <div className="subjects">
-        <div className="subject" onClick={()=>teachersList("physics")}>
-          <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/8e9bf690d23d886f63466a814cfbec78187f91d2" alt="Physics" />
-          <p>Physics</p>
-        </div>
-        <div className="subject" onClick={()=>teachersList("chemistry")}>
-          <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/3e546b344774eb0235acc6bf6dad7814a59d6e95" alt="Chemistry" />
-          <p>Chemistry</p>
-        </div>
-        <div className="subject" onClick={()=>teachersList("biology")}>
-          <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/28ac70002ae0a676d9cfb0f298f3e453d12b5555" alt="Zoology" />
-          <p>Biology</p>
-        </div>
-        <div className="subject" onClick={()=>teachersList("math")}>
-          <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/61930117e428a1f0f7268f888a84145f93aa0664" alt="Math" />
-          <p>Math</p>
-        </div>
-        <div className="subject" onClick={()=>teachersList("computer")}>
-          <img src="https://www.figma.com/file/6b4R8evBkii6mI53IA4vSS/image/a64c93efe984ab29f1dfb9e8d8accd9ba449f272" alt="Computer" />
-          <p>Computer</p>
-        </div>
-        
-      </div>
-
-      <div className="flex items-center justify-center gap-10">
-        {!loading && facList && (
-          facList.map(fac => (
-          <div key={fac._id} className="bg-[#99afbc] p-5 rounded-md ">
-            <div className="flex gap-3 items-center mb-2 ">
-            <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" alt="profile_img" width={50} />
-            <div className="flex flex-col justify-center items-start pl-3">
-            <p>{fac.enrolledteacher.Firstname} {fac.enrolledteacher.Lastname}</p>
-            <h4 className="text-blue-900">{fac.enrolledteacher.Email}</h4>
-            </div>
-            </div>
-            { fac.enrolledteacher.Email === "urttsg@gmail.com" ?
-              <h4><span className="font-bold text-brown-800">Education :</span> Post graduate from Calcutta University</h4> 
-              : 
-              <h4><span className="font-bold text-brown-800">Education :</span> Post graduate from Sister Nivedita university</h4>
-            }
-            { fac.enrolledteacher.Email === "urttsg@gmail.com" ? <h4>1 years of teaching experience</h4> : <h4>2 years of teaching experience</h4>}
-          </div>
-        )))}
-      </div>
-
-      </div>
-
-      {/* About Us */}
-      <div className="about" style={{backgroundColor: "#042439"}}>
-        <h4>About Us</h4>
-        <hr className="underLine"/>
-        <div className="content">
-          <div className="left-svg">
-            <img src={Plant2} width={300} alt="" />
-          </div>
-          <p>
-            At Shiksharthee, we believe in the power of education to transform lives. Our platform is designed to be a gateway to knowledge, offering a diverse range of courses and learning experiences for students.
-            <h1 className=" bg-blue-700 w-fit py-1 px-3 rounded-sm my-2">Our Story</h1>
-            Shiksharthee was born out of a passion for learning and a desire to make quality education accessible to everyone. We understand the challenges faced by modern learners and strive to provide a solution that is both convenient and effective.
-            <h1 className=" bg-blue-700 w-fit py-1 px-3 rounded-sm my-2">Our Mission</h1>
-            Our mission is simple yet profound: to empower individuals through education. We aim to create a global learning community where students can discover new passions, enhance their skills, and achieve their academic and professional goals. By leveraging technology and innovative teaching methods, we strive to make learning engaging, interactive, and enjoyable.
+          <p className="text-xl md:text-2xl text-slate-700 font-medium max-w-2xl mx-auto lg:mx-0">
+            Your ultimate gateway to modern education. Connect with elite mentors and crush your goals starting today.
           </p>
-          <div className="right-svg">
-            <img src={Plant} width={400} alt="" />
+          
+          {/* Search Bar */}
+          <div className="bg-white border-4 border-slate-900 rounded-[2rem] shadow-[8px_8px_0px_0px_#0f172a] p-3 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto lg:mx-0">
+            <div className="flex-1 flex items-center gap-3 px-4 w-full border-2 border-slate-200 rounded-[1.5rem] bg-slate-50 focus-within:border-slate-900 transition-colors">
+              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+              <input 
+                type="text" 
+                placeholder='What do you want to learn? (e.g. Math)' 
+                value={subject} 
+                onChange={(e)=>setSubject(e.target.value)}
+                className="bg-transparent border-none outline-none text-slate-900 w-full placeholder-slate-500 py-3 font-bold text-lg"
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
+            </div>
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ y: -4, boxShadow: "10px 10px 0px 0px #0f172a" }}
+              className='bg-lime-400 text-slate-900 font-black text-lg py-4 px-8 rounded-[1.5rem] border-2 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] transition-all w-full sm:w-auto uppercase tracking-wider origin-center' 
+              onClick={handleSearch}
+            >
+              Explore
+            </motion.button>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          initial="hidden" 
+          animate="visible" 
+          variants={popIn} 
+          className="flex-1 relative w-full flex justify-center mt-12 lg:mt-0 xl:-mr-10"
+        >
+           <motion.div 
+             animate={{ rotate: [3, -2, 3], scale: [1, 1.02, 1] }} 
+             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+             className="absolute inset-0 bg-yellow-400 rounded-[3rem] border-4 border-slate-900 shadow-[12px_12px_0px_0px_#0f172a] -z-10 w-full max-w-md mx-auto h-[400px] lg:h-auto"
+           />
+           <motion.img 
+             animate={{ y: [0, -15, 0] }}
+             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+             src={Hero3D} 
+             className="relative w-full max-w-[500px] object-cover scale-[1.15] drop-shadow-2xl translate-y-[-2rem] lg:translate-y-[-3rem]" 
+             alt="Hero 3D Illustration" 
+           />
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <section className="relative py-28 bg-white border-y-4 border-slate-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeInUp}
+            className="text-center mb-16 space-y-4"
+          >
+            <span className="bg-purple-300 text-slate-900 font-bold py-2 px-6 rounded-full border-2 border-slate-900 uppercase tracking-widest text-sm inline-block shadow-[4px_4px_0px_0px_#0f172a] transform rotate-2">
+               Why Choose Us
+            </span>
+            <h3 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight">Experience Excellence</h3>
+          </motion.div>
+
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16 relative z-10"
+          >
+            {[
+              { click: AA, icon: "👨‍🏫", title: "Expert Mentors", desc: "Our expert mentors are the cornerstone of our educational approach. Elite support.", bg: "bg-sky-200" },
+              { click: BB, icon: "💻", title: "Live Classes", desc: "We deliver ultra high-quality live classes. Interactive learning anywhere, anytime.", bg: "bg-lime-300" }
+            ].map((feature, idx) => (
+              <motion.div key={idx} variants={fadeInUp} whileHover={{ y: -10, boxShadow: "16px 16px 0px 0px #0f172a" }} onClick={feature.click} className="bg-white border-4 border-slate-900 rounded-[2.5rem] p-10 flex flex-col items-center text-center cursor-pointer transition-shadow duration-300 shadow-[8px_8px_0px_0px_#0f172a]">
+                <div className={`w-24 h-24 ${feature.bg} border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] rounded-[1.5rem] flex items-center justify-center mb-8 transform ${idx % 2 === 0 ? '-rotate-3' : 'rotate-3'} transition-transform duration-300`}>
+                  <span className="text-4xl">{feature.icon}</span>
+                </div>
+                <h4 className="text-3xl font-black text-slate-900 mb-4">{feature.title}</h4>
+                <p className="text-slate-600 leading-relaxed font-bold text-lg">{feature.desc}</p>
+              </motion.div>
+            ))}
+
+            <NavLink to='/contact'>
+              <motion.div variants={fadeInUp} whileHover={{ y: -10, boxShadow: "16px 16px 0px 0px #0f172a" }} className="bg-white border-4 border-slate-900 rounded-[2.5rem] p-10 flex flex-col items-center text-center cursor-pointer transition-shadow duration-300 shadow-[8px_8px_0px_0px_#0f172a] h-full block">
+                <div className="w-24 h-24 bg-orange-300 border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] rounded-[1.5rem] flex items-center justify-center mb-8 transform -rotate-6 transition-transform duration-300">
+                  <span className="text-4xl">🤝</span>
+                </div>
+                <h4 className="text-3xl font-black text-slate-900 mb-4">24/7 Support</h4>
+                <p className="text-slate-600 leading-relaxed font-bold text-lg">Challenge at midnight? Our dedicated team is here to provide absolute guidance.</p>
+              </motion.div>
+            </NavLink>
+          </motion.div>
+
+          {/* Conditional Features Details */}
+          <div className="min-h-[400px] flex items-center justify-center w-full mt-10">
+            {LClass && (
+              <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ type: "spring" }} className="flex flex-col md:flex-row items-center justify-center gap-16 bg-sky-200 border-4 border-slate-900 p-10 md:p-14 rounded-[3rem] w-full shadow-[12px_12px_0px_0px_#0f172a]">
+                <div className="relative w-full max-w-md bg-white border-4 border-slate-900 rounded-[2.5rem] shadow-[8px_8px_0px_0px_#0f172a] p-4 transform -rotate-2">
+                  <img src="https://lh3.googleusercontent.com/kq1PrZ8Kh1Pomlbfq4JM1Gx4z-oVr3HG9TEKzwZfqPLP3TdVYrx0QrIbpR-NmMwgDzhNTgi3FzuzseMpjzkfNrdHK5AzWGZl_RtKB80S-GZmWOQciR9s=w1296-v1-e30" alt="Live Class" className="rounded-[2rem] border-2 border-slate-200" />
+                </div>
+                <div className="text-center md:text-left space-y-6 max-w-lg">
+                  <span className="inline-block py-2 px-5 rounded-full bg-white text-slate-900 font-bold text-sm tracking-wider border-2 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] uppercase">Live Sessions</span>
+                  <h3 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.1]">The Ultimate <br/>Classroom.</h3>
+                  <p className="text-slate-700 text-xl leading-relaxed font-bold">
+                    Immerse yourself in real-time learning. High-definition streams and brutal collaboration tools make learning aggressive and effective.
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {EMentor && (
+              <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                {[
+                  { img: "https://media.istockphoto.com/id/1310210662/photo/portrait-of-indian-woman-as-a-teacher-in-sari-standing-isolated-over-white-background-stock.jpg?s=612x612&w=0&k=20&c=EMI42nCFpak1c4JSFvwfN0Qllyxt19dlihYEXAdnCXY=", name: "Prof. Dina Sharma", uni: "Galaxy Uni", deg: "Ph.D. Astrophysics", bg: "bg-pink-300" },
+                  { img: "https://media.istockphoto.com/id/1324558913/photo/confident-young-man-in-casual-green-shirt-looking-away-standing-with-crossed-arms-isolated-on.jpg?s=612x612&w=0&k=20&c=NOrKRrUuxvePKijL9sFBHlDwHESv7Van68-hoS-_4hQ=", name: "Dr. Anand Mishra", uni: "Maharishi Uni", deg: "Ph.D. Physics", bg: "bg-lime-300" },
+                  { img: "https://media.istockphoto.com/id/1663458254/photo/portrait-of-beautiful-indian-woman-in-sari.jpg?s=612x612&w=0&k=20&c=raeTJOEyA4sFX_GwrgboXt9ZxtAZ8RkFuljPJnL9sCU=", name: "Prof. Sunita Patel", uni: "Ramanujan Inst", deg: "D.Phil. Numbers", bg: "bg-orange-300" }
+                ].map((mentor, i) => (
+                  <motion.div variants={popIn} key={i} className={`bg-white border-4 border-slate-900 p-8 rounded-[2.5rem] flex flex-col items-center text-center shadow-[8px_8px_0px_0px_#0f172a] transform transition-transform hover:-translate-y-2`}>
+                    <div className={`w-32 h-32 rounded-[2rem] border-4 border-slate-900 mb-6 shadow-[4px_4px_0px_0px_#0f172a] overflow-hidden ${mentor.bg} transform rotate-3`}>
+                      <img className="w-full h-full object-cover scale-110" src={mentor.img} alt={mentor.name}/>
+                    </div>
+                    <div className="space-y-4 w-full">
+                      <h4 className="text-slate-900 font-black text-2xl">{mentor.name}</h4>
+                      <div className="flex items-center justify-center gap-2 text-slate-700 font-bold border-2 border-slate-200 py-1.5 px-3 rounded-xl bg-slate-50"><FaSchool className="text-slate-900" /> {mentor.uni}</div>
+                      <div className="flex items-center justify-center gap-2 text-slate-900 font-black text-sm bg-yellow-400 py-2 px-4 rounded-xl border-2 border-slate-900">{mentor.deg}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Contact Us */}
-      <div className="contact-us">
-        <Contact/>
-      </div>
+      {/* Courses/Faculty Selection */}
+      <section className="py-28 max-w-7xl mx-auto px-6 relative z-10">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16 space-y-4">
+          <span className="bg-lime-400 text-slate-900 font-bold py-2 px-6 rounded-full border-2 border-slate-900 uppercase tracking-widest text-sm inline-block shadow-[4px_4px_0px_0px_#0f172a] transform -rotate-2">
+            Explore Subjects
+          </span>
+          <h3 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight">Find Your Faculty</h3>
+        </motion.div>
 
-      {/* Footer */}
-      <Footer/>
-    </>
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="flex flex-wrap justify-center gap-6 mb-16">
+          {[
+            { tag: "physics", label: "Physics", emoji: "⚛️", color: "bg-purple-300" },
+            { tag: "chemistry", label: "Chemistry", emoji: "🧪", color: "bg-sky-300" },
+            { tag: "biology", label: "Biology", emoji: "🧬", color: "bg-lime-300" },
+            { tag: "math", label: "Math", emoji: "🧮", color: "bg-orange-300" },
+            { tag: "computer", label: "Computer", emoji: "💻", color: "bg-yellow-400" },
+          ].map((sub) => (
+            <motion.div 
+              variants={popIn}
+              whileHover={{ y: -8, boxShadow: "10px 10px 0px 0px #0f172a" }}
+              key={sub.tag} 
+              onClick={() => teachersList(sub.tag)} 
+              className={`bg-white border-4 border-slate-900 w-36 h-36 rounded-[2rem] flex flex-col items-center justify-center gap-4 cursor-pointer shadow-[6px_6px_0px_0px_#0f172a] transition-shadow group`}
+            >
+              <div className={`w-16 h-16 ${sub.color} rounded-2xl border-4 border-slate-900 flex items-center justify-center text-3xl shadow-[4px_4px_0px_0px_#0f172a] transform group-hover:rotate-12 transition-transform duration-300`}>
+                {sub.emoji}
+              </div>
+              <p className="text-slate-900 font-black uppercase tracking-wider text-sm">{sub.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Faculty Results */}
+        {loading === false && (
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {facList && facList.length > 0 ? facList.map(fac => (
+              <motion.div variants={fadeInUp} whileHover={{ y: -5 }} key={fac._id} className="bg-white border-4 border-slate-900 p-8 rounded-[2.5rem] shadow-[8px_8px_0px_0px_#0f172a] transition-all relative">
+                <div className="flex gap-5 items-center mb-6 pb-6 border-b-4 border-slate-900">
+                  <div className="w-16 h-16 rounded-2xl bg-sky-200 border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] flex items-center justify-center overflow-hidden flex-shrink-0">
+                    <img src="https://www.pngall.com/wp-content/uploads/5/Profile-Male-PNG.png" alt="Profile" className="w-[120%] h-[120%] object-cover mt-2" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-xl font-black text-slate-900 truncate">{fac.enrolledteacher.Firstname} {fac.enrolledteacher.Lastname}</p>
+                    <p className="text-sm font-bold text-slate-500 truncate">{fac.enrolledteacher.Email}</p>
+                  </div>
+                </div>
+                <div className="space-y-4 text-slate-800 font-bold">
+                  <div className="bg-yellow-100 p-4 rounded-2xl border-4 border-slate-900 flex items-start gap-3 shadow-[4px_4px_0px_0px_#0f172a]">
+                    <IoSchoolSharp className="text-slate-900 mt-1 shrink-0 text-xl" />
+                    <p className="text-sm">
+                      <span className="block text-slate-900 font-black mb-1 uppercase tracking-widest text-xs">Education</span>
+                      {fac.enrolledteacher.Email === "urttsg@gmail.com" ? "PG Calcutta Univ." : "PG Sister Nivedita"}
+                    </p>
+                  </div>
+                  <div className="bg-lime-100 p-4 rounded-2xl border-4 border-slate-900 flex items-start gap-3 shadow-[4px_4px_0px_0px_#0f172a]">
+                    <FaSchool className="text-slate-900 mt-0.5 shrink-0 text-lg" />
+                    <p className="text-sm">
+                      <span className="block text-slate-900 font-black mb-1 uppercase tracking-widest text-xs">Experience</span>
+                      {fac.enrolledteacher.Email === "urttsg@gmail.com" ? "1 year pro" : "2 years pro"}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )) : (
+              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="col-span-full text-center py-20 bg-white rounded-[3rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_#0f172a]">
+                <div className="w-24 h-24 bg-red-200 border-4 border-slate-900 rounded-[2rem] shadow-[4px_4px_0px_0px_#0f172a] flex items-center justify-center mx-auto mb-6 transform rotate-3">
+                  <span className="text-4xl">❌</span>
+                </div>
+                <p className="text-3xl text-slate-900 font-black mb-2 tracking-tight">No mentors found</p>
+                <p className="text-slate-600 font-bold text-lg">Please select a different learning path.</p>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
+      </section>
+
+      {/* Styled About Section */}
+      <section className="relative py-28 bg-white border-y-4 border-slate-900 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="space-y-6 max-w-2xl">
+            <span className="bg-yellow-400 text-slate-900 font-bold py-2 px-6 rounded-full border-2 border-slate-900 uppercase tracking-widest text-sm inline-block shadow-[4px_4px_0px_0px_#0f172a]">
+              Our Foundation
+            </span>
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[1.1]">
+              Mission <br /> <span className="text-sky-500">Unstoppable.</span>
+            </h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.5, rotate: -15 }} whileInView={{ opacity: 1, scale: 1, rotate: 3 }} transition={{ type: "spring", bounce: 0.5 }} viewport={{ once: true }} className="flex-1 w-full flex justify-center md:justify-end">
+            <div className="w-48 h-48 md:w-64 md:h-64 bg-pink-300 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_#0f172a] p-4 flex items-center justify-center overflow-hidden">
+              <img src={Growth3D} className="w-full h-full object-cover scale-125" alt="Mission 3D" />
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 mt-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <motion.div variants={fadeInUp} whileHover={{ y: -5, boxShadow: "12px 12px 0px 0px #0f172a" }} className="bg-sky-200 border-4 border-slate-900 p-10 md:p-12 rounded-[2.5rem] shadow-[8px_8px_0px_0px_#0f172a] transition-shadow">
+              <span className="inline-block py-2 px-5 rounded-full bg-white text-slate-900 font-bold border-2 border-slate-900 uppercase mb-4 shadow-[4px_4px_0px_0px_#0f172a]">
+                Our Story
+              </span>
+              <p className="text-slate-900 font-bold text-xl leading-relaxed mt-4">
+                Born out of a huge passion for learning and a desire to make absolutely prime education truly accessible to everyone. We understand the challenges. We build solutions.
+              </p>
+            </motion.div>
+            <motion.div variants={fadeInUp} whileHover={{ y: -5, boxShadow: "12px 12px 0px 0px #0f172a" }} className="bg-lime-300 border-4 border-slate-900 p-10 md:p-12 rounded-[2.5rem] shadow-[8px_8px_0px_0px_#0f172a] transition-shadow">
+              <span className="inline-block py-2 px-5 rounded-full bg-white text-slate-900 font-bold border-2 border-slate-900 uppercase mb-4 shadow-[4px_4px_0px_0px_#0f172a]">
+                Our Mission
+              </span>
+              <p className="text-slate-900 font-bold text-xl leading-relaxed mt-4">
+                To radically empower individuals through supreme education. We aim to aggressively create a global learning community where limits do not exist.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Section Wrapper */}
+      <section className="relative py-28 z-20 px-6 max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ type: "spring", bounce: 0.2 }} className="bg-purple-200 p-10 md:p-14 rounded-[3rem] shadow-[12px_12px_0px_0px_#0f172a] border-4 border-slate-900 relative overflow-hidden">
+          <div className="relative z-10 w-full bg-white p-8 rounded-[2rem] border-4 border-slate-900 shadow-inner">
+            <Contact />
+          </div>
+        </motion.div>
+      </section>
+
+      <Footer />
+    </div>
   );
 }
 

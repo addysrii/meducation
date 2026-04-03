@@ -97,7 +97,7 @@ const TeacherDocument = () => {
       }
     } catch (e) {
       console.error("Error:", e);
-      
+
     }
   };
 
@@ -122,7 +122,7 @@ const TeacherDocument = () => {
       <div className="flex items-center gap-[20rem] px-32 py-2 bg-[#0D286F]">
         <div className="flex items-center gap-3">
           <img src={logo} className="w-14" alt="" />
-          <h1 className="text-2xl text-[#4E84C1] font-bold">Shiksharthee</h1>
+          <h1 className="text-2xl text-[#4E84C1] font-bold">meducation</h1>
         </div>
         <h2 className="text-white text-xl">Document Verification (Teacher) </h2>
       </div>

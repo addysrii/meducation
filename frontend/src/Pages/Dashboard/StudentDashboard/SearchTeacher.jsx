@@ -1,71 +1,112 @@
 import React, { useState } from 'react'
 import Search from '../../Components/Searchbtn/Search'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function SearchTeacher() {
   const [popup, SetPopup] = useState(false);
+  
   return (
-    <div className='ml-56'>
+    <div className='w-full relative h-full flex flex-col'>
+        <div className="flex justify-between items-center mb-6">
+           <h2 className="text-2xl font-black text-white px-2">Find a Course</h2>
+           <button 
+             onClick={() => SetPopup(true)}
+             className="bg-sky-400 hover:bg-sky-500 text-slate-900 font-bold px-4 py-2 rounded-xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_#0f172a] hover:-translate-y-0.5 transition-all outline-none"
+           >
+             Give Feedback 💬
+           </button>
+        </div>
+
         <Search/>
+
+        <AnimatePresence>
         {popup && (
-          <div className='fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center'>
-            <div className='bg-[#5be0de] w-[70vw] px-14 py-10 rounded-sm'>
-              {/* <div className=' absolute w-9 h-9 bg-white rounded-xl cursor-pointer flex items-center justify-center m-2' onClick={onClose}>✖️</div> */}
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4'
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 30, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              className='bg-yellow-300 w-full max-w-2xl px-10 py-10 rounded-[2.5rem] border-4 border-slate-900 shadow-[16px_16px_0px_0px_#0f172a] relative overflow-y-auto max-h-[90vh]'
+            >
+              <button onClick={() => SetPopup(false)} className='absolute top-6 right-6 w-10 h-10 bg-white border-4 border-slate-900 rounded-full flex items-center justify-center font-black text-xl hover:bg-slate-900 hover:text-white transition-colors z-10 shadow-[4px_4px_0px_0px_#0f172a]'>
+                  ✕
+              </button>
 
-              <p className='text-3xl'>Student Feedback Form</p>
-              <p className=' border-b-2 py-2'>Please help us improve our courses by filling out this student feedback form. We highly appreciate your involvement. Thank you!</p>
+              <h3 className='text-4xl font-black text-slate-900 tracking-tight'>Student <span className="text-purple-600 underline decoration-4 decoration-white">Feedback</span> </h3>
+              <p className='mt-2 font-bold text-slate-700 bg-white/40 p-3 rounded-lg border-2 border-slate-900 mb-8'>
+                  Help us improve our courses by filling out this feedback form. We highly appreciate your involvement!
+              </p>
 
-              <div className='flex flex-col gap-3 my-5 pb-5 border-b-2'>
-                <label>Teacher / Instructor</label>
-                <input type="text" className='p-2'  placeholder='Teacher / Instructor Name'/>
-                <label>Course Name</label>
-                <input type="text" className='p-2'  placeholder='Course Name'/>
-                <label>What you like about this course?</label>
-                <input type="text" className='p-2'  placeholder=''/>
+              <div className='flex flex-col gap-5 mb-8'>
+                <div>
+                    <label className="block font-black uppercase text-xs tracking-widest text-slate-800 mb-1 pl-1">Instructor</label>
+                    <input type="text" className='w-full bg-white border-4 border-slate-900 rounded-xl px-4 py-3 font-bold text-slate-900 placeholder-slate-400 shadow-[4px_4px_0px_0px_#0f172a] focus:outline-none focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_#0f172a] transition-all' placeholder='Teacher Name'/>
+                </div>
+                <div>
+                    <label className="block font-black uppercase text-xs tracking-widest text-slate-800 mb-1 pl-1">Course Name</label>
+                    <input type="text" className='w-full bg-white border-4 border-slate-900 rounded-xl px-4 py-3 font-bold text-slate-900 placeholder-slate-400 shadow-[4px_4px_0px_0px_#0f172a] focus:outline-none focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_#0f172a] transition-all' placeholder='Course Name'/>
+                </div>
+                <div>
+                    <label className="block font-black uppercase text-xs tracking-widest text-slate-800 mb-1 pl-1">What you like about this course?</label>
+                    <textarea className='w-full bg-white border-4 border-slate-900 rounded-xl px-4 py-3 font-bold text-slate-900 placeholder-slate-400 shadow-[4px_4px_0px_0px_#0f172a] focus:outline-none focus:translate-y-[2px] focus:shadow-[2px_2px_0px_0px_#0f172a] transition-all min-h-[100px] resize-none' placeholder='Write here...'/>
+                </div>
               </div>
 
-              <p className='font-bold'>Please rate each following statement : </p>
+              <div className="bg-white border-4 border-slate-900 rounded-[2rem] p-6 shadow-[8px_8px_0px_0px_#0f172a] mb-8">
+                  <p className='font-black text-lg mb-4'>Please rate the following:</p>
+                  
+                  <div className='space-y-4'>
+                    <div className='flex flex-col md:flex-row md:items-center justify-between gap-2 border-b-2 border-slate-200 pb-3'>
+                      <p className='font-bold text-slate-700'>Effort invested</p>
+                      <div className='flex gap-4 font-bold text-sm'>
+                        {['Very Good', 'Good', 'Fair', 'Poor'].map((val, i) => (
+                           <label key={i} className="flex items-center gap-1 cursor-pointer"><input name="g1" type="radio" value={val}/> {val}</label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className='flex flex-col md:flex-row md:items-center justify-between gap-2 border-b-2 border-slate-200 pb-3'>
+                      <p className='font-bold text-slate-700'>Subject Knowledge</p>
+                      <div className='flex gap-4 font-bold text-sm'>
+                        {['Very Good', 'Good', 'Fair', 'Poor'].map((val, i) => (
+                           <label key={i} className="flex items-center gap-1 cursor-pointer"><input name="g2" type="radio" value={val}/> {val}</label>
+                        ))}
+                      </div>
+                    </div>
+                    <div className='flex flex-col md:flex-row md:items-center justify-between gap-2'>
+                      <p className='font-bold text-slate-700'>Communication</p>
+                      <div className='flex gap-4 font-bold text-sm'>
+                        {['Very Good', 'Good', 'Fair', 'Poor'].map((val, i) => (
+                           <label key={i} className="flex items-center gap-1 cursor-pointer"><input name="g3" type="radio" value={val}/> {val}</label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              <div className='bg-sky-200 p-5 rounded-2xl border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] mb-8'>
+                <p className='font-black mb-3'>Would you recommend this course?</p>
+                <div className="flex gap-6 font-bold">
+                    <label className="flex items-center gap-2 cursor-pointer"><input name="recommend" type="radio" /> Yes, definitely</label>
+                    <label className="flex items-center gap-2 cursor-pointer"><input name="recommend" type="radio" /> No way</label>
+                </div>
+              </div>
+
+              <div className='flex justify-end'>
+                <motion.button 
+                   whileHover={{ y: -4, boxShadow: "6px 6px 0px 0px #0f172a" }}
+                   whileTap={{ scale: 0.95 }}
+                   onClick={() => { alert('Feedback submitted!'); SetPopup(false); }}
+                   className='bg-purple-500 hover:bg-purple-600 text-white font-black px-10 py-4 rounded-xl border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] uppercase tracking-widest'
+                >
+                  Submit Form
+                </motion.button>
+              </div>
               
-              <div className='my-3'>
-                <div className='flex gap-1'>
-                  <p className='mr-[1.65rem]'>Level of effort invested in course</p>
-                  <input name="group" type="radio" id='one'/> <label className='mr-3' htmlFor='one'>Very Good</label>
-                  <input name="group" type="radio" id='two'/> <label className='mr-3' htmlFor='two'>Good</label>
-                  <input name="group" type="radio" id='three'/> <label className='mr-3' htmlFor='three'>Fair</label>
-                  <input name="group" type="radio" id='four'/> <label className='mr-3' htmlFor='four'>Poor</label>
-                  <input name="group" type="radio" id='five'/> <label className='mr-3' htmlFor='five'>Very Poor</label>
-                </div>
-                <div className='flex gap-1 mt-1'>
-                  <p className='mr-4'>Level of knowledge on the Subject</p>
-                  <input name="group-0" type="radio" id='onec'/> <label className='mr-3' htmlFor='onec'>Very Good</label>
-                  <input name="group-0" type="radio" id='twoc'/> <label className='mr-3' htmlFor='twoc'>Good</label>
-                  <input name="group-0" type="radio" id='threec'/> <label className='mr-3' htmlFor='threec'>Fair</label>
-                  <input name="group-0" type="radio" id='fourc'/> <label className='mr-3' htmlFor='fourc'>Poor</label>
-                  <input name="group-0" type="radio" id='fivec'/> <label className='mr-3' htmlFor='fivec'>Very Poor</label>
-                </div>
-                <div className='flex gap-1 mt-1'>
-                  <p className='mr-[5.48rem]'>Level of communication</p>
-                  <input name="group-1" type="radio" id='oned'/> <label className='mr-3' htmlFor='oned'>Very Good</label>
-                  <input name="group-1" type="radio" id='twod'/> <label className='mr-3' htmlFor='twod'>Good</label>
-                  <input name="group-1" type="radio" id='threed'/> <label className='mr-3' htmlFor='threed'>Fair</label>
-                  <input name="group-1" type="radio" id='fourd'/> <label className='mr-3' htmlFor='fourd'>Poor</label>
-                  <input name="group-1" type="radio" id='fived'/> <label className='mr-3' htmlFor='fived'>Very Poor</label>
-                </div>
-
-              </div>
-
-              <div className='py-3'>
-                <p className='pb-3'>Would you recommend this course to other students?</p>
-                <input name="radio-group" type="radio" id='one'/> <label htmlFor='one'>Yes</label>
-                <input name="radio-group" type="radio" id='two' className='ml-5'/> <label htmlFor='two'>No</label>
-              </div>
-
-              <div className='flex justify-center'>
-                <button className='w-[10rem]'>Submit Form</button>
-              </div>
-              
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
+        </AnimatePresence>
     </div> 
   )
 }

@@ -1,206 +1,234 @@
 import React, { useState } from "react";
-import HR from "../Login/Images/HR.svg";
-import "./Login.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import Radiobtn from "../Components/RadioBtn/Radiobtn";
-import Header from "../Home/Header/Header";
+import { motion } from "framer-motion";
 
 export default function Login() {
-  // State to hold user input and errors
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState('student');
   const [err, setErr] = useState('');
+  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
 
-  const navigate=useNavigate()
-
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Client-side validation
     const newErrors = {};
 
-    if (!Email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(Email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!Password.trim()) {
-      newErrors.password = "Password is required";
-    }
+    if (!Email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(Email)) newErrors.email = "Invalid email format";
+    if (!Password.trim()) newErrors.password = "Password is required";
+    if (!userType) newErrors.userType = "Please select Student or Teacher";
 
     if (Object.keys(newErrors).length > 0) {
-      // Update the errors state and prevent form submission
       setErrors(newErrors);
       return;
     }
 
-    // Prepare data object to send to the backend
-    const data = {
-      Email: Email,
-      Password: Password,
-    };
+    setLoading(true);
+    setErr('');
+    setErrors({});
 
     try {
-      // Send data to backend (you need to implement this part)
       const response = await fetch(`/api/${userType}/login`, {
         method: 'POST',
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Email, Password }),
       });
 
-      const responesData = await response.json()
-      if(responesData.message != 'Logged in'){
-        setErr(responesData.message);
-      }
-      const userid = responesData.data.user._id
- 
-      // Handle response
+      const responesData = await response.json();
+      if (responesData.message !== 'Logged in') setErr(responesData.message || '');
+
+      const userid = responesData.data?.user?._id;
+
       if (response.ok) {
-        // Authentication successful, you can redirect or do something else
-        console.log("Login successful");
-        console.log(responesData.data.user.Isapproved);
-        
-        
-        if(responesData.data.user.Isapproved === "pending"){
-          if(responesData.data.user.Teacherdetails || responesData.data.user.Studentdetails){
-            navigate('/pending')
-          }else{
-            if(userType === 'student'){
-              navigate(`/StudentDocument/${userid}`)
-            }else if(userType === 'teacher'){
-              navigate(`/TeacherDocument/${userid}`)
-            }
+        const approved = responesData.data.user.Isapproved;
+        if (approved === "pending") {
+          if (responesData.data.user.Teacherdetails || responesData.data.user.Studentdetails) {
+            navigate('/pending');
+          } else {
+            navigate(userType === 'student' ? `/StudentDocument/${userid}` : `/TeacherDocument/${userid}`);
           }
-        }else if(responesData.data.user.Isapproved === "approved"){
-          if(userType === 'student'){
-            navigate(`/Student/Dashboard/${userid}/Search`)
-          }else if(userType === 'teacher'){
-            navigate(`/Teacher/Dashboard/${userid}/Home`)
-          }
-        }else if(responesData.data.user.Isapproved === "reupload"){
-          if(userType === 'teacher'){
-            navigate(`/rejected/${userType}/${userid}`)
-          }else{
-            navigate(`/rejected/${userType}/${userid}`)
-          }
-        }else{
-          setErr('You are ban from our platform!');
+        } else if (approved === "approved") {
+          localStorage.setItem("userSession", JSON.stringify({ id: userid, type: userType }));
+          navigate(userType === 'student' ? `/Student/Dashboard/${userid}/Search` : `/Teacher/Dashboard/${userid}/Home`);
+        } else if (approved === "reupload") {
+          navigate(`/rejected/${userType}/${userid}`);
+        } else {
+          setErr('You are banned from our platform.');
         }
-
       } else if (response.status === 401) {
-        // Incorrect password
         setErrors({ password: responesData.message || "Incorrect password" });
-      } else if (response.status === 403) {
-        // Account locked, disabled, or other authentication issues
-
-        setErrors({ general: responesData.message || "Login failed" });
       } else if (response.status === 400) {
         setErrors({ general: responesData.message || "User does not exist" });
-      } else if (response.status === 422) {
-        setErrors({
-          general: responesData.message || '"Email" must be a valid email',
-        });
       } else {
-        // Other unexpected errors
         setErrors({ general: "An unexpected error occurred" });
       }
     } catch (error) {
-   
-      setErrors(error.message);
+      setErrors({ general: error.message });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-    <Header/>
-    <section className="main">
-      <div className="container">
-        {/* <div className="logo">
-          <img src="" alt="" />
-          <h1 className="head">Logo</h1>
-        </div> */}
-        {/* headings */}
-        <div className="para1">
-          <h2> WELCOME BACK!</h2>
-        </div>
+    <div className="min-h-screen bg-[#F4F4F5] font-sans flex flex-col md:flex-row selection:bg-yellow-300 selection:text-slate-900">
 
-        <div className="para">
-          <h5> Please Log Into Your Account.</h5>
-        </div>
+      {/* Left Panel — Brand Side */}
+      <div className="md:w-1/2 bg-slate-900 flex flex-col items-center justify-center p-12 relative overflow-hidden min-h-[260px]">
+        {/* Decorative blobs */}
+        <div className="absolute top-10 left-10 w-48 h-48 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-56 h-56 bg-purple-400/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="form">
-          <form onSubmit={handleSubmit}>
-            <div className="input-1">
-              <input
-                type="text"
-                placeholder="Email Address"
-                className="input-0"
-                value={Email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {errors.email && (
-                <div className="error-message">{errors.email}</div>
-              )}
+        <motion.div 
+          initial={{ x: -30, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="relative z-10 flex flex-col items-center md:items-start gap-8 w-full max-w-sm"
+        >
+          <NavLink to="/" className="flex items-center gap-3">
+            <div className="w-14 h-14 bg-yellow-400 rounded-2xl border-4 border-yellow-300 shadow-[4px_4px_0px_0px_#fef08a] flex items-center justify-center text-3xl">
+              💡
             </div>
-            <div className="input-2">
-              <input
-                type="password"
-                placeholder="Password"
-                className="input-0"
-                value={Password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {errors.password && (
-                <div className="error-message">{errors.password}</div>
-              )}
-            </div>
+            <span className="text-4xl font-black text-white uppercase tracking-tighter">meducation</span>
+          </NavLink>
 
-            {/* radio buttons */}
-            <div className="radio-btn">
-              <Radiobtn  userType={userType} setUserType={setUserType}  />
-            </div>
+          <div className="flex flex-col gap-4">
+            <h1 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
+              Welcome<br/>Back! 👋
+            </h1>
+            <p className="text-slate-400 font-bold text-lg max-w-xs">
+              Your knowledge journey continues right where you left off.
+            </p>
+          </div>
 
-            <div className="signup-link">
-              <span>Don't have an account? </span>
-              <NavLink to="/signup" className="link text-yellow-400 text-semibold text-md ">
-                signup
-              </NavLink>
-            </div>
-
-            <div className="text-yellow-400 text-semibold pt-3 cursor-pointer" onClick={()=>navigate('/forgetpassword')} >
-              Forget Password?
-            </div>
-
-            {/* btns */}
-            <div className="btns">
-              <button type="submit" className="btns-1">
-                Log In
-              </button>
-            </div>
-            {err != '' && (
-              <p className="text-red-400 text-sm">{err}</p>
-            )}
-            {/* {errors.general && (
-              <div className="error-message">{errors.general}</div>
-            )} */}
-          </form>
-        </div>
+          <div className="flex flex-col gap-3 w-full">
+            {['📚 1000+ Active Courses', '🎓 500+ Expert Teachers', '🚀 Real-time Live Classes'].map((feat, i) => (
+              <motion.div
+                key={i}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.2 + i * 0.1 }}
+                className="flex items-center gap-3 bg-white/10 border border-white/20 px-4 py-3 rounded-xl"
+              >
+                <span className="font-bold text-white text-sm">{feat}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      {/* image */}
-      <div className="img-3">
-        <img src={HR} width={600} alt="" />
+      {/* Right Panel — Form Side */}
+      <div className="md:w-1/2 flex items-center justify-center p-6 md:p-12">
+        <motion.div
+          initial={{ x: 30, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="w-full max-w-md"
+        >
+          <div className="bg-white rounded-[2.5rem] border-4 border-slate-900 shadow-[12px_12px_0px_0px_#0f172a] p-8 md:p-10">
+
+            <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase mb-2">Sign In</h2>
+            <p className="text-sm font-bold text-slate-500 mb-8">Enter your credentials to access your dashboard.</p>
+
+            {/* Role Toggle */}
+            <div className="flex bg-slate-100 border-4 border-slate-900 p-1.5 rounded-2xl shadow-[4px_4px_0px_0px_#0f172a] mb-6">
+              {['student', 'teacher'].map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setUserType(type)}
+                  className={`flex-1 py-3 rounded-xl font-black text-sm uppercase tracking-widest transition-colors ${
+                    userType === type
+                      ? 'bg-white border-2 border-slate-900 text-slate-900 shadow-[2px_2px_0px_0px_#0f172a]'
+                      : 'text-slate-500 hover:text-slate-900'
+                  }`}
+                >
+                  {type === 'student' ? '🎒 Student' : '🏫 Teacher'}
+                </button>
+              ))}
+            </div>
+            {errors.userType && <p className="text-red-500 font-bold text-sm -mt-4 mb-4">{errors.userType}</p>}
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Email Address</label>
+                <input
+                  id="email"
+                  type="text"
+                  placeholder="hello@meducation.com"
+                  className={`w-full text-lg font-bold text-slate-900 bg-white p-4 rounded-xl border-4 focus:outline-none focus:bg-yellow-50 focus:shadow-[4px_4px_0px_0px_#0f172a] transition-all placeholder:text-slate-300 ${errors.email ? 'border-red-400' : 'border-slate-900'}`}
+                  value={Email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && <p className="text-red-500 font-bold text-sm mt-1">{errors.email}</p>}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2">Password</label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className={`w-full text-lg font-bold text-slate-900 bg-white p-4 pr-14 rounded-xl border-4 focus:outline-none focus:bg-yellow-50 focus:shadow-[4px_4px_0px_0px_#0f172a] transition-all placeholder:text-slate-300 ${errors.password ? 'border-red-400' : 'border-slate-900'}`}
+                    value={Password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-xl text-slate-400 hover:text-slate-900 transition-colors"
+                  >
+                    {showPassword ? '🙈' : '👁️'}
+                  </button>
+                </div>
+                {errors.password && <p className="text-red-500 font-bold text-sm mt-1">{errors.password}</p>}
+              </div>
+
+              {/* Global Error */}
+              {(err || errors.general) && (
+                <div className="bg-red-100 border-4 border-red-400 rounded-xl p-3 shadow-[2px_2px_0px_0px_#f87171]">
+                  <p className="font-black text-red-700 text-sm">⚠ {err || errors.general}</p>
+                </div>
+              )}
+
+              {/* Forgot password */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-slate-600">
+                  No account?{" "}
+                  <NavLink to="/Signup" className="font-black text-slate-900 underline underline-offset-4 hover:text-purple-600 transition-colors">
+                    Sign Up
+                  </NavLink>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => navigate('/forgetPassword')}
+                  className="text-sm font-black text-slate-500 hover:text-slate-900 underline underline-offset-4 transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+
+              {/* Submit */}
+              <motion.button
+                type="submit"
+                disabled={loading}
+                whileHover={!loading ? { y: -4, boxShadow: "6px 6px 0px 0px #0f172a" } : {}}
+                whileTap={!loading ? { scale: 0.95 } : {}}
+                className={`w-full mt-2 py-4 rounded-xl font-black text-xl uppercase tracking-widest border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a] transition-colors cursor-pointer ${loading ? 'bg-slate-300 text-slate-500' : 'bg-yellow-400 text-slate-900 hover:bg-yellow-500'}`}
+              >
+                {loading ? 'Signing In...' : 'Log In →'}
+              </motion.button>
+            </form>
+          </div>
+        </motion.div>
       </div>
-    </section>
-    </>
+    </div>
   );
- 
 }

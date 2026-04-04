@@ -6,7 +6,7 @@ import Razorpay from "razorpay"
 const app = express();
 
 app.use(cors({
-    origin: "*", // your frontend
+    origin: "https://meducation-xi.vercel.app", // your frontend
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));

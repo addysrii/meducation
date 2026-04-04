@@ -28,7 +28,7 @@ function Search() {
     setTname({ fname, lname, sub });
     const resData = await fetch(`${api}/api/teacher/teacherdocuments`, {
       method: 'POST',
-      credentials: "include",
+
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ teacherID: id }),
@@ -44,6 +44,7 @@ function Search() {
         const response = await fetch(`${api}/api/course/student/${ID}/enrolled`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
         });
         if (!response.ok) throw new Error('Failed to fetch data');
         const user = await response.json();
@@ -75,13 +76,15 @@ function Search() {
 
   const handleEnroll = async (courseName, id) => {
     let check = await fetch(`${api}/api/course/${courseName}/${id}/verify/student/${ID}`, {
-      method: "POST", headers: { "Content-Type": "application/json" }
+      method: "POST", headers: { "Content-Type": "application/json" },
+        credentials: "include",
     });
     const res = await check.json();
     if (res.statusCode === 200) {
       const dataReq = await fetch(`${api}/api/payment/course/${id}/${courseName}`, {
         method: "POST",
         body: JSON.stringify({ fees: price[courseName] * 100 }),
+          credentials: "include",
       });
       const DATA = await dataReq.json();
       const Key = await fetch(`${api}/api/payment/razorkey`, {

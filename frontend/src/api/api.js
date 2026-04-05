@@ -1,3 +1,2 @@
-const api = "https://www.meducation.in"
-
+const api = "https://meducation.onrender.com
 export default api

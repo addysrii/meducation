@@ -69,7 +69,7 @@ function Popup({ onClose, subject }) {
 
     if (invalidTimeRange) return;
     if (desc === '') { alert('Fill the description.'); return; }
-    if (selectedDays.length === 0){ alert('Please select at least one day and time.'); return; }
+    if (selectedDays.length === 0) { alert('Please select at least one day and time.'); return; }
 
     onClose();
 
@@ -80,36 +80,37 @@ function Popup({ onClose, subject }) {
     };
 
     try {
-       const response = await fetch(`${api}/api/course/${subject}/create/${ID}`, {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify(data),
-       });
-       const responseData = await response.json();
-       alert(responseData.message);
-    } catch(err) {
-       console.log(err);
+      const response = await fetch(`${api}/api/course/${subject}/create/${ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
+      const responseData = await response.json();
+      alert(responseData.message);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   return (
     <AnimatePresence>
-      <motion.div 
-         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-         className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4 overflow-y-auto'
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[200] p-4 overflow-y-auto'
       >
-        <motion.div 
-           initial={{ scale: 0.9, y: 30, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-           className='w-full max-w-2xl bg-amber-300 text-slate-900 rounded-[2.5rem] border-4 border-slate-900 shadow-[16px_16px_0px_0px_#0f172a] my-8 h-auto flex flex-col'
+        <motion.div
+          initial={{ scale: 0.9, y: 30, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className='w-full max-w-2xl bg-amber-300 text-slate-900 rounded-[2.5rem] border-4 border-slate-900 shadow-[16px_16px_0px_0px_#0f172a] my-8 h-auto flex flex-col'
         >
           {/* Header */}
           <div className="bg-slate-900 p-6 relative rounded-t-[2rem]">
-             <button onClick={onClose} className='absolute top-6 right-6 w-10 h-10 bg-white border-4 border-slate-900 rounded-full flex items-center justify-center font-black text-xl hover:bg-red-400 hover:text-white transition-colors z-10 shadow-[4px_4px_0px_0px_#0f172a]'>✕</button>
-             <span className="bg-lime-400 text-slate-900 font-black tracking-widest uppercase px-3 py-1 text-xs rounded-lg border-2 border-slate-900 shadow-sm inline-block mb-3">Course Builder</span>
-             <h2 className="text-4xl font-black text-white tracking-tighter capitalize flex items-center gap-3">
-                {subject} <span className="text-3xl">📚</span>
-             </h2>
+            <button onClick={onClose} className='absolute top-6 right-6 w-10 h-10 bg-white border-4 border-slate-900 rounded-full flex items-center justify-center font-black text-xl hover:bg-red-400 hover:text-white transition-colors z-10 shadow-[4px_4px_0px_0px_#0f172a]'>✕</button>
+            <span className="bg-lime-400 text-slate-900 font-black tracking-widest uppercase px-3 py-1 text-xs rounded-lg border-2 border-slate-900 shadow-sm inline-block mb-3">Course Builder</span>
+            <h2 className="text-4xl font-black text-white tracking-tighter capitalize flex items-center gap-3">
+              {subject} <span className="text-3xl">📚</span>
+            </h2>
           </div>
 
           {/* Form Content */}
@@ -117,11 +118,11 @@ function Popup({ onClose, subject }) {
 
             <div className="bg-white p-5 rounded-2xl border-4 border-slate-900 shadow-[4px_4px_0px_0px_#0f172a]">
               <label className="block text-xs font-black tracking-widest uppercase text-slate-500 mb-2">Subject Name</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className='w-full text-lg font-bold text-slate-500 bg-slate-100 p-3 rounded-xl border-4 border-slate-900 cursor-not-allowed uppercase tracking-widest'
-                value={subject} 
-                readOnly 
+                value={subject}
+                readOnly
               />
             </div>
 
@@ -176,13 +177,13 @@ function Popup({ onClose, subject }) {
             </div>
 
             <div className='flex justify-end pt-2 pb-2'>
-              <motion.button 
-                 whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px #0f172a" }}
-                 whileTap={{ scale: 0.95 }}
-                 onClick={addCourse} 
-                 className='w-full md:w-auto bg-purple-500 hover:bg-purple-600 text-white px-10 border-4 border-slate-900 py-4 shadow-[4px_4px_0px_0px_#0f172a] rounded-xl font-black text-xl uppercase tracking-widest transition-colors cursor-pointer'
+              <motion.button
+                whileHover={{ y: -4, boxShadow: "8px 8px 0px 0px #0f172a" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={addCourse}
+                className='w-full md:w-auto bg-purple-500 hover:bg-purple-600 text-white px-10 border-4 border-slate-900 py-4 shadow-[4px_4px_0px_0px_#0f172a] rounded-xl font-black text-xl uppercase tracking-widest transition-colors cursor-pointer'
               >
-                 Create Course ✨
+                Create Course ✨
               </motion.button>
             </div>
 

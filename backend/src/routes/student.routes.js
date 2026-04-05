@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {signup, mailVerified, login,logout, addStudentDetails, getStudent, forgetPassword, resetPassword } from "../controllers/student.controller.js";
+import {signup, mailVerified, login,logout, addStudentDetails, getStudent, forgetPassword, resetPassword, googleLogin } from "../controllers/student.controller.js";
 import {upload} from "../middlewares/multer.middleware.js"
 import {authSTD} from "../middlewares/stdAuth.middleware.js"
 import { authSchema } from "../middlewares/joiLogin.middleware.js";
@@ -16,6 +16,10 @@ router.route("/verify").get(
 
 router.route("/login").post(
     authSchema, login
+)
+
+router.route("/google-login").post(
+    googleLogin
 )
 
 router.route("/logout").post(authSTD, logout)

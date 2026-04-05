@@ -6,6 +6,11 @@ import nodemailer from "nodemailer";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Teacher } from "../models/teacher.model.js";
 import { Sendmail } from "../utils/Nodemailer.js";
+import { OAuth2Client } from 'google-auth-library';
+import crypto from "crypto";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 
 
@@ -400,6 +405,73 @@ const  resetPassword= asyncHandler(async (req, res) => {
 
 
 
+const googleLogin = asyncHandler(async (req, res) => {
+    const { token } = req.body; // this is the access_token
+    if (!token) throw new ApiError(400, "Google token is required");
+
+    let payload;
+    try {
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!userInfoRes.ok) throw new Error("Invalid token response");
+        payload = await userInfoRes.json();
+    } catch (error) {
+        throw new ApiError(401, "Invalid Google API response");
+    }
+
+    const { email, given_name, family_name } = payload;
+
+    if (!email) throw new ApiError(400, "Email not found in Google account");
+
+    // Check if the user is a teacher
+    const isTeacher = await Teacher.findOne({ Email: email });
+    if (isTeacher) throw new ApiError(400, "Email belongs to a Teacher account");
+
+    // Find or create student
+    let std = await student.findOne({ Email: email });
+
+    if (!std) {
+        // Create new student if they don't exist
+        std = await student.create({
+            Firstname: given_name || "User",
+            Lastname: family_name || "",
+            Email: email,
+            Password: crypto.randomBytes(16).toString('hex'), // Random password they won't use
+            Isverified: true, // Auto-verify email
+            Studentdetails: null
+        });
+    } else if (!std.Isverified) {
+        // If they existed but hadn't verified email, mark them verified now
+        std.Isverified = true;
+        await std.save({ validateBeforeSave: false });
+    }
+
+    const { Accesstoken, Refreshtoken } = await generateAccessAndRefreshTokens(std._id);
+
+    const loggedInStd = await student.findById(std._id).select("-Password -Refreshtoken");
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+    };
+
+    return res
+        .status(200)
+        .cookie("Accesstoken", Accesstoken, options)
+        .cookie("Refreshtoken", Refreshtoken, options)
+        .json(
+            new ApiResponse(
+                200, {
+                user: loggedInStd
+            }, "logged in with Google"
+            )
+        );
+});
+
+
+
 export{
     signup,
      mailVerified,
@@ -408,5 +480,6 @@ export{
       addStudentDetails,
        getStudent, 
        forgetPassword,
-       resetPassword
+       resetPassword,
+       googleLogin
 }

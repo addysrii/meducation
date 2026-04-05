@@ -150,6 +150,10 @@ const Admin = () => {
             <h4 className="text-white bg-blue-800 p-4 w-44">Course Requests</h4>
         </div>
 
+        <div onClick={()=>navigator(`/admin/store/${data}`)} className=" absolute right-96 top-[6.5rem] text-center cursor-pointer">
+            <h4 className="text-white bg-purple-800 p-4 w-44">Store Requests</h4>
+        </div>
+
         {open && (
           <div className="mt-3 w-[30rem] absolute right-10 bg-gray-700 text-gray-100 p-5">
             {allmsg.map((msg,index) => (

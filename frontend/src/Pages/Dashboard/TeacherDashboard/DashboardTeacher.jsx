@@ -59,10 +59,11 @@ function DashboardTeacher() {
       try {
         const Data = await fetch(`${api}/api/teacher/teacherdocuments`, {
           method: 'POST',
-          credentials: "include",
+
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ teacherID: data.Teacherdetails }),
         });
         const res = await Data.json();

@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom border width not in Tailwind v3 default scale */
+@layer utilities {
+  .border-3 {
+    border-width: 3px;
+  }
+}
+
 
 
 

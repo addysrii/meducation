@@ -20,6 +20,7 @@ export default function TeacherDashboard() {
         const response = await fetch(`${api}/api/Teacher/TeacherDocument/${ID}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
+          credentials: "include",
         });
         if (!response.ok) throw new Error('Failed to fetch data');
         const user = await response.json();
@@ -37,9 +38,9 @@ export default function TeacherDashboard() {
     try {
       const response = await fetch(`${api}/api/teacher/logout`, {
         method: "POST",
-        credentials: "include",
+
         headers: { "Content-Type": "application/json" },
-        credentials: "include"
+        credentials: "include",
       });
       const res = await response.json();
       if (res.statusCode === 200) {
@@ -58,9 +59,10 @@ export default function TeacherDashboard() {
     : "??";
 
   const navLinks = [
-    { label: "Dashboard", icon: "📊", to: `/Teacher/Dashboard/${ID}/Home`, color: "bg-purple-300" },
-    { label: "Classes", icon: "📅", to: `/Teacher/Dashboard/${ID}/Classes`, color: "bg-sky-300" },
-    { label: "Courses", icon: "📚", to: `/Teacher/Dashboard/${ID}/Courses`, color: "bg-lime-300" },
+    { label: "Dashboard", icon: "📊", to: `/Teacher/Dashboard/${ID}/Home`,    color: "bg-purple-300" },
+    { label: "Classes",   icon: "📅", to: `/Teacher/Dashboard/${ID}/Classes`, color: "bg-sky-300"    },
+    { label: "Courses",   icon: "📚", to: `/Teacher/Dashboard/${ID}/Courses`, color: "bg-lime-300"   },
+    { label: "Store",     icon: "🛒", to: `/Teacher/Dashboard/${ID}/Store`,   color: "bg-yellow-300" },
   ];
 
   return (

@@ -59,9 +59,10 @@ export default function StudentDashboard() {
     : "??";
 
   const navLinks = [
-    { label: "Search", icon: "🔍", to: `/Student/Dashboard/${ID}/Search`, color: "bg-purple-300" },
-    { label: "Classes", icon: "📅", to: `/Student/Dashboard/${ID}/Classes`, color: "bg-sky-300" },
-    { label: "Courses", icon: "📚", to: `/Student/Dashboard/${ID}/Courses`, color: "bg-lime-300" },
+    { label: "Search",  icon: "🔍", to: `/Student/Dashboard/${ID}/Search`,  color: "bg-purple-300" },
+    { label: "Classes", icon: "📅", to: `/Student/Dashboard/${ID}/Classes`, color: "bg-sky-300"    },
+    { label: "Courses", icon: "📚", to: `/Student/Dashboard/${ID}/Courses`, color: "bg-lime-300"   },
+    { label: "Store",   icon: "🛍️", to: `/Student/Dashboard/${ID}/Store`,   color: "bg-yellow-300" },
   ];
 
   return (

@@ -60,7 +60,7 @@ export default function StudentCourses() {
   const openpopup = async (sub) => {
     setSubDetails(sub);
     try {
-      const res = await axios.get(`${api}/api/course/${sub.coursename}`);
+      const res = await axios.get(`$      {api}/api/course/${sub.coursename}`);
       setSubD(res.data.data);
       setPopup(true);
     } catch {

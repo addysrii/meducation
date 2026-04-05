@@ -6,6 +6,11 @@ import { Sendmail } from "../utils/Nodemailer.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { student } from "../models/student.model.js";
 import nodemailer from "nodemailer";
+import { OAuth2Client } from 'google-auth-library';
+import crypto from "crypto";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 const verifyEmail = async (Email, Firstname, createdTeacherId) => {
     console.log(process.env.SMTP_EMAIL, process.env.SMTP_PASS);
@@ -389,4 +394,70 @@ const ForgetPassword=asyncHandler(async(req,res)=>{
      }
  });
 
-export { signup, mailVerified, login, logout, addTeacherDetails, getTeacher, teacherdocuments,ForgetPassword,ResetPassword};
+
+const googleLogin = asyncHandler(async (req, res) => {
+    const { token } = req.body; // this is the access_token
+    if (!token) throw new ApiError(400, "Google token is required");
+
+    let payload;
+    try {
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!userInfoRes.ok) throw new Error("Invalid token response");
+        payload = await userInfoRes.json();
+    } catch (error) {
+        throw new ApiError(401, "Invalid Google API response");
+    }
+
+    const { email, given_name, family_name } = payload;
+
+    if (!email) throw new ApiError(400, "Email not found in Google account");
+
+    // Check if the user is a student
+    const isStudent = await student.findOne({ Email: email });
+    if (isStudent) throw new ApiError(400, "Email belongs to a Student account");
+
+    // Find or create teacher
+    let teacher = await Teacher.findOne({ Email: email });
+
+    if (!teacher) {
+        // Create new teacher
+        teacher = await Teacher.create({
+            Firstname: given_name || "User",
+            Lastname: family_name || "",
+            Email: email,
+            Password: crypto.randomBytes(16).toString('hex'), // Random password
+            Isverified: true, // Auto verify
+            Teacherdetails: null
+        });
+    } else if (!teacher.Isverified) {
+        // If existed but unverified
+        teacher.Isverified = true;
+        await teacher.save({ validateBeforeSave: false });
+    }
+
+    const { Accesstoken, Refreshtoken } = await generateAccessAndRefreshTokens(teacher._id);
+
+    const loggedInTeacher = await Teacher.findById(teacher._id).select("-Password -Refreshtoken");
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+    };
+
+    return res
+        .status(200)
+        .cookie("Accesstoken", Accesstoken, options)
+        .cookie("Refreshtoken", Refreshtoken, options)
+        .json(
+            new ApiResponse(
+                200, {
+                user: loggedInTeacher
+            }, "logged in with Google"
+            )
+        );
+});
+ 
+export { signup, mailVerified, login, logout, addTeacherDetails, getTeacher, teacherdocuments,ForgetPassword,ResetPassword, googleLogin};

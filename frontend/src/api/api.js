@@ -1,3 +1,3 @@
-const api = "https://meducation.onrender.com"
+const api = "http://localhost:8000"
 
 export default api

@@ -6,15 +6,15 @@ import Razorpay from "razorpay"
 const app = express();
 
 app.use(cors({
-    origin: "https://meducation-xi.vercel.app", // your frontend
+    origin: "http://localhost:5173", // your frontend
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
 
 app.options("*", cors()); // VERY IMPORTANT
 
-app.use(express.json({limit: "16kb"}))
-app.use(express.urlencoded({extended: true, limit: "16kb"}))
+app.use(express.json({ limit: "16kb" }))
+app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 
 app.use(cookieParser())
 
@@ -43,5 +43,8 @@ app.use("/api/admin", adminRouter)
 import paymentRouter from "./routes/payment.routes.js"
 app.use("/api/payment", paymentRouter)
 
+import storeRouter from "./routes/store.routes.js"
+app.use("/api/store", storeRouter)
+
 app.use(express.static("public"))
-export {app}
+export { app }

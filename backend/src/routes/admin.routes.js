@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { adminLogin, adminLogout, adminSignUp, approveStudent, approveTeacher, checkStudentDocuments, checkTeacherDocuments, forApproval, sendmessage, allmessages, readMessage, toapproveCourse, approveCourse } from "../controllers/admin.controller.js";
+import { adminLogin, adminLogout, adminSignUp, approveStudent, approveTeacher, checkStudentDocuments, checkTeacherDocuments, forApproval, sendmessage, allmessages, readMessage, toapproveCourse, approveCourse, toapproveStore, approveStoreItem } from "../controllers/admin.controller.js";
 import { authAdmin } from "../middlewares/adminAuth.middleware.js";
 
 const router = Router()
@@ -29,6 +29,10 @@ router.route("/message/read").patch(authAdmin, readMessage)
 router.route("/:adminID/approve/course").get(authAdmin, toapproveCourse)
 
 router.route("/:adminID/approve/course/:courseID").post(authAdmin, approveCourse)
+
+router.route("/:adminID/approve/store").get(authAdmin, toapproveStore);
+
+router.route("/:adminID/approve/store/:type/:id").post(authAdmin, approveStoreItem);
 
 export default router;
 

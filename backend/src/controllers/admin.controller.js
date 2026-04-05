@@ -6,6 +6,8 @@ import { student, studentdocs } from "../models/student.model.js";
 import { Teacher, Teacherdocs } from "../models/teacher.model.js";
 import { contact } from "../models/contact.model.js";
 import { course } from "../models/course.model.js";
+import { RecordedChapter } from "../models/recordedChapter.model.js";
+import { Notes } from "../models/notes.model.js";
 import {Sendmail} from "../utils/Nodemailer.js"
 
 
@@ -526,4 +528,45 @@ const approveCourse = asyncHandler(async(req,res)=>{
    
 
 })
-export {adminSignUp, adminLogin, forApproval, approveStudent, approveTeacher, checkStudentDocuments, checkTeacherDocuments, adminLogout, sendmessage, allmessages,readMessage, toapproveCourse, approveCourse}
+const toapproveStore = asyncHandler(async(req, res) => {
+    const adminID = req.params.adminID;
+    if(!adminID) throw new ApiError(400, "not authorized");
+    
+    const loggedAdmin = await admin.findById(adminID);
+    if(!loggedAdmin) throw new ApiError(400, "admin not found");
+
+    const chapters = await RecordedChapter.find({ isapproved: "pending" }).populate("teacher", "Firstname Lastname Email");
+    const notes = await Notes.find({ isapproved: "pending" }).populate("teacher", "Firstname Lastname Email");
+
+    return res.status(200).json(new ApiResponse(200, { chapters, notes }, "fetched successfully"));
+});
+
+const approveStoreItem = asyncHandler(async(req, res) => {
+    const adminID = req.params.adminID;
+    if(!adminID) throw new ApiError(400, "not authorized");
+    
+    const loggedAdmin = await admin.findById(adminID);
+    if(!loggedAdmin) throw new ApiError(400, "admin not found");
+
+    const { id, type } = req.params; // type = 'chapter' or 'notes'
+    const toApprove = req.body.isapproved; // "approved" or "rejected"
+
+    const Model = type === 'chapter' ? RecordedChapter : Notes;
+    
+    if (toApprove === "approved") {
+        const item = await Model.findByIdAndUpdate(id, { $set: { isapproved: "approved" } }, { new: true }).populate("teacher");
+        if(item && item.teacher) {
+            Sendmail(item.teacher.Email, `Store Item Approved`, `Your items (${item.title}) has been approved.`);
+        }
+        return res.status(200).json(new ApiResponse(200, item, `Item approved successfully`));
+    } else {
+        const item = await Model.findByIdAndDelete(id, {new: true}).populate("teacher");
+        if(item && item.teacher) {
+            Sendmail(item.teacher.Email, `Store Item Rejected`, `Your items (${item.title}) has been rejected.`);
+        }
+        return res.status(200).json(new ApiResponse(200, {}, `Item rejected successfully`));
+    }
+});
+
+
+export {adminSignUp, adminLogin, forApproval, approveStudent, approveTeacher, checkStudentDocuments, checkTeacherDocuments, adminLogout, sendmessage, allmessages,readMessage, toapproveCourse, approveCourse, toapproveStore, approveStoreItem}

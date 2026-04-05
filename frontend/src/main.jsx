@@ -84,7 +84,7 @@ const router = createBrowserRouter(
  )
 )
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "1234567890-test.apps.googleusercontent.com"; // Provide a valid ID here later
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "381036821450-ctshktq82r01ilg01ibcobk88vs3aj7t.apps.googleusercontent.com"; // Provide a valid ID here later
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
